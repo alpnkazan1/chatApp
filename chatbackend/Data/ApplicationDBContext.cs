@@ -39,18 +39,54 @@ namespace chatbackend.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Chat>(x => x.HasKey(c => c.ChatId));
+            //Chat entity configuration
+            builder.Entity<Chat>(entity =>
+            {
+                entity.HasKey(e => e.ChatId);
 
-            builder.Entity<Chat>()
-                .HasOne(c => c.User1)
-                .WithMany(u => u.Chats)
-                .HasForeignKey(c => c.User1Id)
-                .OnDelete(DeleteBehavior.Restrict); 
+                // We need 2 foreign keys for users 1 and 2.
+                entity.HasOne(u => u.User1)
+                    .WithMany() // each user can have multiple chats
+                    .HasForeignKey(e => e.User1Id)
+                    .OnDelete(DeleteBehavior.Restrict); 
 
-            builder.Entity<Portfolio>()
-                .HasOne( u=>u.Stock)
-                .WithMany(u => u.Portfolios)
-                .HasForeignKey(p => p.StockId);                
+                entity.HasOne(u => u.User2)
+                    .WithMany()
+                    .HasForeignKey(e => e.User2Id)
+                    .OnDelete(DeleteBehavior.Restrict); 
+
+
+                entity.Property(e => e.UserName1).IsRequired().HasMaxLength(250);
+                entity.Property(e => e.UserName2).IsRequired().HasMaxLength(250);
+                entity.Property(e => e.BlockFlag).IsRequired().HasDefaultValue(0);
+                entity.Property(e => e.LastMessage);
+
+                //Indexing is needed
+                entity.HasIndex(e => new { e.User1Id, e.User2Id }).IsUnique();
+            });
+
+            //Message entity configuration 
+            builder.Entity<Message>(entity =>
+            {
+                entity.HasKey(e => e.MessageId);
+
+                // Relationship with Chat
+                entity.HasOne(u => u.Chat)
+                    .WithMany() // A chat can have many messages.
+                    .HasForeignKey(e => e.ChatId)
+                    .OnDelete(DeleteBehavior.Cascade); // If a chat is deleted, delete the messages
+
+                // Relationship with User (sender)
+                entity.HasOne( u => u.Sender )
+                    .WithMany() // A user can send many messages
+                    .HasForeignKey(e => e.SenderId);
+
+                entity.Property(e => e.MessageText).IsRequired(false); // Nullable
+                entity.Property(e => e.PhotoId).IsRequired(false); // Nullable
+                entity.Property(e => e.SoundId).IsRequired(false); // Nullable
+                entity.Property(e => e.Timestamp).IsRequired();
+            });
+
 
             List<IdentityRole> roles = new List<IdentityRole>
             {
@@ -58,6 +94,10 @@ namespace chatbackend.Data
                     Name = "ChatUser",
                     NormalizedName = "USER"
                 },
+                new IdentityRole{
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                }
             };
             builder.Entity<IdentityRole>().HasData(roles);
         }

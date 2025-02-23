@@ -8,10 +8,12 @@ namespace chatbackend.Models
     public class Message
     {
         public Guid MessageId { get; set; }
+        public Chat Chat { get; set; }
 
         public Guid ChatId { get; set; }
 
-        public Guid SenderId { get; set; }
+        public string SenderId { get; set; }
+        public User Sender { get; set; }
 
         public string? MessageText { get; set; }
 
