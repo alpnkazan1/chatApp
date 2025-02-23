@@ -50,13 +50,13 @@ namespace chatbackend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "47cc8be9-39a1-4849-8018-a6513236ea96",
+                            Id = "4068df82-df71-4f69-9d2b-c77a1e24640a",
                             Name = "ChatUser",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "fb8eca0f-0ed8-4889-961d-7c04e39e3407",
+                            Id = "bc418e97-2952-4be4-845a-ebe40920d4f2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -291,6 +291,12 @@ namespace chatbackend.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");

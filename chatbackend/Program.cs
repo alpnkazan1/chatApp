@@ -1,5 +1,7 @@
 using chatbackend.Data;
+using chatbackend.Interfaces;
 using chatbackend.Models;
+using chatbackend.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -58,6 +60,7 @@ builder.Services.AddAuthentication(options => {
 // These are dependency injections, they allow for implicit construction of interfaced models
 // Controllers utilize implicit declarations. For example:
 // Instead of creating StockRepository, stock controller creates IStockRepository
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 

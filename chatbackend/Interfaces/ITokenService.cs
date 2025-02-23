@@ -8,9 +8,9 @@ namespace chatbackend.Interfaces
 {
     public interface ITokenService
     {
-        Task<string> CreateToken(User user);
+        string CreateToken(User user);
         Task<string?> RefreshTokenAsync(string refreshToken);
-        Task<string> GenerateRefreshTokenAsync();
+        string GenerateRefreshToken();
         Task RevokeTokenAsync(string token);
     }
 }

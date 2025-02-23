@@ -100,6 +100,11 @@ namespace chatbackend.Data
                 }
             };
             builder.Entity<IdentityRole>().HasData(roles);
+            builder.Entity<User>(entity =>
+                {
+                    entity.Property(e => e.RefreshToken);
+                }
+            );
         }
     }
 }
