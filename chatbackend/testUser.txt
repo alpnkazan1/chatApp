@@ -1,0 +1,10 @@
+{
+  "username": "rationalInvestor",
+  "email": "rationalInvestor@very.com",
+  "password": "rAt1*nal_InvesT"
+}
+{
+  "username": "John Smith",
+  "email": "taxidriver@mail.com",
+  "password": "TaxiL_123J@hn"
+}
