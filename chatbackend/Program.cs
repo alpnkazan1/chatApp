@@ -57,6 +57,7 @@ builder.Services.AddAuthentication(options => {
     };
 });
 
+
 // These are dependency injections, they allow for implicit construction of interfaced models
 // Controllers utilize implicit declarations. For example:
 // Instead of creating StockRepository, stock controller creates IStockRepository

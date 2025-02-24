@@ -19,6 +19,12 @@ namespace chatbackend.Models
         public string UserName1 { get; set; }
         public string UserName2 { get; set; }
 
+        /*
+            0 -> No blocking
+            1 -> User1 blocked User2
+            2 -> User2 blocked User1
+            3 -> Both blocked each other
+        */
         public uint BlockFlag { get; set; } = 0;
 
         public Guid LastMessage { get; set; }

@@ -16,7 +16,7 @@ ChatApp consists of three main components:
 - The backend structure is inspired by a design from [teddysmithdev](https://github.com/teddysmithdev), but the API logic, WebSocket implementation, and overall architecture differ significantly.
 
 ### PostgreSQL Database
-- The database structure is entirely custom-built and can be observed in `appSchematic.jpg`.
+- The database structure is entirely custom-built and can be observed in `appSchematic.jpg`. For implementation, you will likely need to change DefaultConnection.
 
 ## Current Status
 

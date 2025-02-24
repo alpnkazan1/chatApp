@@ -9,18 +9,23 @@ namespace chatbackend.Models
     {
         public Guid MessageId { get; set; }
         public Chat Chat { get; set; }
-
         public Guid ChatId { get; set; }
-
         public string SenderId { get; set; }
         public User Sender { get; set; }
-
+        public string ReceiverId { get; set; }
+        public User Receiver { get; set; }
+        [MaxLength(1000)]
         public string? MessageText { get; set; }
 
-        public Guid? PhotoId { get; set; }
-
-        public Guid? SoundId { get; set; }
-
+        /*
+            0 -> No files attached
+            1 -> Sound file
+            2 -> Image file
+            3 -> Rest
+        */
+        public uint FileFlag { get; set; } = 0; 
+        public Guid? FileId { get; set; }
+        public string? FileExtension { get; set; }
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
     }
 }

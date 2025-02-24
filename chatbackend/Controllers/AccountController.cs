@@ -14,15 +14,16 @@ namespace chatbackend.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly ITokenService _tokenService;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<AuthController> _logger;
-        public AccountController(UserManager<User> userManager, 
+        public AuthController(UserManager<User> userManager, 
                                 ITokenService tokenService, 
-                                SignInManager<User> signInManager)
+                                SignInManager<User> signInManager,
+                                ILogger<AuthController> logger)
         {
             _userManager = userManager;
             _tokenService = tokenService;

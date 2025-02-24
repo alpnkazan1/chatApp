@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using chatbackend.Helpers;
 using chatbackend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -12,9 +13,19 @@ namespace chatbackend.Data
 {
     public class ApplicationDBContext : IdentityDbContext<User>
     {
-        public ApplicationDBContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+
+        private readonly string _baseFilePath;
+        private readonly ILogger<ApplicationDBContext> _logger;
+        private readonly IWebHostEnvironment _environment;
+        public ApplicationDBContext(DbContextOptions dbContextOptions, 
+                                    IConfiguration configuration,
+                                    ILogger<ApplicationDBContext> logger,
+                                    IWebHostEnvironment environment) 
+                                        : base(dbContextOptions)
         {
-            
+            _baseFilePath = configuration["FileStorage:BaseFilePath"];
+            _logger = logger;
+            _environment = environment;
         }
         // There is an issue with HasData() taking in dynamically defined parameters. 
         // In this case it takes List<IdentityRole>. I believe it decides that 
@@ -43,6 +54,8 @@ namespace chatbackend.Data
             builder.Entity<Chat>(entity =>
             {
                 entity.HasKey(e => e.ChatId);
+                
+                entity.HasIndex(c => new { c.User1Id, c.User2Id });
 
                 // We need 2 foreign keys for users 1 and 2.
                 entity.HasOne(u => u.User1)
@@ -81,11 +94,23 @@ namespace chatbackend.Data
                     .WithMany() // A user can send many messages
                     .HasForeignKey(e => e.SenderId);
 
+                entity.HasOne( u => u.Receiver )
+                    .WithMany() // A user can receive many messages
+                    .HasForeignKey(e => e.ReceiverId);
+
                 entity.Property(e => e.MessageText).IsRequired(false); // Nullable
-                entity.Property(e => e.PhotoId).IsRequired(false); // Nullable
-                entity.Property(e => e.SoundId).IsRequired(false); // Nullable
+                entity.Property(e => e.FileFlag).IsRequired(true);
+                entity.Property(e => e.FileId).IsRequired(false); // Nullable
+                entity.Property(e => e.FileExtension).IsRequired(false); // Nullable
                 entity.Property(e => e.Timestamp).IsRequired();
+
+                entity.HasIndex(c => new { c.SenderId });
+
+                entity.HasIndex(e => new { e.ChatId });
             });
+            
+            builder.Entity<Chat>()
+                .HasIndex(c => new { c.User1Id, c.User2Id });
 
 
             List<IdentityRole> roles = new List<IdentityRole>
@@ -105,6 +130,64 @@ namespace chatbackend.Data
                     entity.Property(e => e.RefreshToken);
                 }
             );
+        }
+    
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var deletedFilePaths = new List<string>(); // Collect file paths
+
+            // 1. Detect Deleted Messages BEFORE calling base.SaveChangesAsync()
+            var deletedMessageEntries = ChangeTracker.Entries<Message>()
+                .Where(e => e.State == EntityState.Deleted)
+                .ToList();
+
+            // 2. Construct File Paths and Collect Them
+            foreach (var entry in deletedMessageEntries)
+            {
+                var message = entry.Entity;
+
+                if (message.FileFlag != 0)
+                {
+                    if (message.FileId == Guid.Empty)
+                    {
+                        _logger.LogWarning($"Message with ID {message.MessageId} has FileFlag set but FileId is null or empty.");
+                        continue; // Skip this message and continue to the next
+                    }
+
+                    if (string.IsNullOrEmpty(message.FileExtension))
+                    {
+                        _logger.LogWarning($"Message with ID {message.MessageId} has FileFlag set but FileExtension is null or empty.");
+                        continue;
+                    }
+
+                    string filePath = FileSystemAccess.CreateFilePath(message);
+                    deletedFilePaths.Add(filePath);
+                }
+            }
+
+            // 3. Call the base implementation to perform the database deletion
+            int result = await base.SaveChangesAsync(cancellationToken);
+
+            //4. Delete the files from the file system AFTER the database changes are saved. This is important in case database change fails you dont want files gone.
+            foreach (var filePath in deletedFilePaths)
+            {
+                try
+                {
+                    //Extract foldername and filename to call method:
+                    string fileName = Path.GetFileName(filePath);
+                    string folderName = Path.GetDirectoryName(filePath);
+                    FileSystemAccess.DeleteFile(folderName, fileName);
+                    _logger.LogInformation($"Deleted file: {filePath}");
+                }
+                catch (Exception ex)
+                {
+                    // Log the error, but don't re-throw.  We don't want to prevent the
+                    // database changes from being committed just because a file deletion failed.
+                    _logger.LogError(ex, $"Error deleting file: {filePath}");
+                }
+            }
+
+            return result;
         }
     }
 }
