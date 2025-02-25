@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;  // Import IWebHostEnvironment
 using Microsoft.Extensions.Logging;
 using chatbackend.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace chatbackend.Helpers
 {
@@ -22,12 +25,14 @@ namespace chatbackend.Helpers
         // Static logger instance
         private static ILogger _logger;
         private static string _baseFilePath;
+        private static string _urlSigningKey;
 
         //Configuration method to initialize the logger
-        public static void Configure(ILoggerFactory loggerFactory, string baseFilePath)
+        public static void FileSystemConfigure(ILoggerFactory loggerFactory, string baseFilePath, string urlSigningKey)
         {
-            _logger = loggerFactory.CreateLogger("ChatHelper");
+            _logger = loggerFactory.CreateLogger("FileSystemAccess");
             _baseFilePath = baseFilePath;
+            _urlSigningKey = urlSigningKey;
         }
 
         public static async Task<FileResult?> GetFileContent(string folderName, string fileNameWithExtension, string baseFilePath)
@@ -130,6 +135,44 @@ namespace chatbackend.Helpers
             string subfolder = GetSubfolder(message.FileFlag);
             string fileNameWithExtension = message.FileId.ToString() + "." + message.FileExtension;
             return Path.Combine(_baseFilePath, subfolder, fileNameWithExtension);
+        }
+
+        public static async Task<bool> IsAuthorizedForChat(ApplicationDBContext context, string userId, Guid chatId)
+        {
+            // If user is authorized for a single message they are authorized for all messages.
+            var message = await context.Chats
+                .FirstOrDefaultAsync(m => m.ChatId == chatId && (m.User1Id == userId || m.User1Id == userId));
+
+            return message != null;
+        }
+
+        public static string GenerateSecuredFileURL(Message message, IUrlHelper urlHelper, int expirationMinutes = 5)
+        {
+            string subfolder = GetSubfolder((uint)message.FileFlag);
+            string fileNameWithExtension = message.FileId.ToString() + "." + message.FileExtension;
+            var expirationTime = DateTime.UtcNow.AddMinutes(expirationMinutes);
+            var key = Guid.NewGuid().ToString(); // Create acessKey
+
+            // Create the URL
+            var url = urlHelper.Action("GetFile", "Content", new { folderName = subfolder, fileName = fileNameWithExtension, accessKey = key, expires = expirationTime.Ticks }, "https");
+
+            //Sign the url
+            var signedUrl = SignUrl(url, _urlSigningKey);
+
+            return signedUrl;
+        }
+
+        private static string SignUrl(string url, string key)
+        {
+            var encoding = new ASCIIEncoding();
+            byte[] keyByte = encoding.GetBytes(key);
+            byte[] messageBytes = encoding.GetBytes(url);
+            using (var hmacsha256 = new HMACSHA256(keyByte))
+            {
+                byte[] hashmessage = hmacsha256.ComputeHash(messageBytes);
+                string hash = string.Concat(hashmessage.Select(b => b.ToString("x2")));
+                return url + "&hash=" + hash;
+            }
         }
     }
 }
