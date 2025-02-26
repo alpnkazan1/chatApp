@@ -7,9 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using chatbackend.Repository;
 using chatbackend.Data;
 using chatbackend.DTOs.Messages;
-using chatbackend.Repository;
+
 
 namespace chatbackend.Controllers
 {
@@ -21,12 +22,14 @@ namespace chatbackend.Controllers
         private readonly ApplicationDBContext _context;
         private readonly IUrlHelper _urlHelper;
         private readonly ILogger<MessageController> _logger;
+        private readonly FileSystemAccess _fileSystemAccess;
 
-        public MessageController(chatbackend.Data.ApplicationDBContext context, IUrlHelper urlHelper, ILogger<MessageController> logger)
+        public MessageController(chatbackend.Data.ApplicationDBContext context, IUrlHelper urlHelper, ILogger<MessageController> logger, FileSystemAccess fileSystemAccess)
         {
             _context = context;
             _urlHelper = urlHelper;
             _logger = logger;
+            _fileSystemAccess = fileSystemAccess;
         }
 
         [HttpGet("{chatId}")]
@@ -35,7 +38,7 @@ namespace chatbackend.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 
-            bool isAuthorized = await IsAuthorizedForChat(_context, userId, chatId);
+            bool isAuthorized = await _fileSystemAccess.IsAuthorizedForChat(_context, userId, chatId);
 
             if (!isAuthorized)
             {
@@ -53,12 +56,19 @@ namespace chatbackend.Controllers
                 return NotFound("No messages found with this chat id.");
 
             //Check authorization and construct secured urls to serve from frontend.
-            var messageResponses = new List<object>();
+            var messageResponses = new List<MessageResponseDto>();
             foreach (var message in messages)
             {
                 try
                 {
-                    string fileUrl = GenerateSecuredFileURL(message, _urlHelper);
+                    string fileUrl = null; // Default to null for no file
+
+                    if (message.FileFlag != 0)
+                    {
+                        string folderName = _fileSystemAccess.GetSubfolder((uint)message.FileFlag);
+                        string fileNameWithExtension = message.FileId.ToString() + "." + message.FileExtension;
+                        fileUrl = _fileSystemAccess.GenerateSecuredFileURL(folderName, fileNameWithExtension, _urlHelper);
+                    }
                     
                     var messageResponseDto = new MessageResponseDto
                     {
@@ -85,6 +95,8 @@ namespace chatbackend.Controllers
             return Ok(messageResponses);
         }
 
+
+        [HttpGet("messageIdCheck/{messageId}")]
         public async Task<IActionResult> GetMessageById(Guid messageId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -98,17 +110,24 @@ namespace chatbackend.Controllers
             {
                 return NotFound("No messages found with this id.");
             }
-            bool isAuthorized = await IsAuthorizedForChat(_context, userId, message.ChatId);
+            bool isAuthorized = await _fileSystemAccess.IsAuthorizedForChat(_context, userId, message.ChatId);
 
             if (!isAuthorized)
             {
                 return Forbid(); // Or Unauthorized, depending on your policy
             }
 
+            string fileUrl = null; // Default to null for no file
+            
+            if (message.FileFlag != 0)
+            {
+                string folderName = _fileSystemAccess.GetSubfolder((uint)message.FileFlag);
+                string fileNameWithExtension = message.FileId.ToString() + "." + message.FileExtension;
+                fileUrl = _fileSystemAccess.GenerateSecuredFileURL(folderName, fileNameWithExtension, _urlHelper);
+            }
+
             try
             {
-                string fileUrl = GenerateSecuredFileURL(message, _urlHelper);
-
                 var messageResponseDto = new MessageResponseDto
                 {
                     MessageId = message.MessageId,
@@ -130,6 +149,9 @@ namespace chatbackend.Controllers
                 _logger.LogError(ex, "Error processing message {MessageId}", message.MessageId);
                 return StatusCode(500, $"Error processing message {message.MessageId}");
             }
+
         }
+    
+        
     }
 }

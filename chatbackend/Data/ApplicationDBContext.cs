@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using chatbackend.Helpers;
 using chatbackend.Models;
+using chatbackend.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -17,16 +18,20 @@ namespace chatbackend.Data
         private readonly string _baseFilePath;
         private readonly ILogger<ApplicationDBContext> _logger;
         private readonly IWebHostEnvironment _environment;
+        private readonly FileSystemAccess _filesystemAccess;
         public ApplicationDBContext(DbContextOptions dbContextOptions, 
                                     IConfiguration configuration,
                                     ILogger<ApplicationDBContext> logger,
-                                    IWebHostEnvironment environment) 
+                                    IWebHostEnvironment environment,
+                                    FileSystemAccess filesystemAccess) 
                                         : base(dbContextOptions)
         {
             _baseFilePath = configuration["FileStorage:BaseFilePath"];
             _logger = logger;
             _environment = environment;
+            _filesystemAccess = filesystemAccess;
         }
+
         // There is an issue with HasData() taking in dynamically defined parameters. 
         // In this case it takes List<IdentityRole>. I believe it decides that 
         // this structure can change depending on different things so it refuses to do migrations
@@ -127,6 +132,7 @@ namespace chatbackend.Data
             builder.Entity<IdentityRole>().HasData(roles);
             builder.Entity<User>(entity =>
                 {
+                    entity.Property(e => e.AvatarId).IsRequired(false);
                     entity.Property(e => e.RefreshToken);
                 }
             );
@@ -160,7 +166,7 @@ namespace chatbackend.Data
                         continue;
                     }
 
-                    string filePath = FileSystemAccess.CreateFilePath(message);
+                    string filePath = _filesystemAccess.CreateFilePath(message);
                     deletedFilePaths.Add(filePath);
                 }
             }
@@ -176,7 +182,15 @@ namespace chatbackend.Data
                     //Extract foldername and filename to call method:
                     string fileName = Path.GetFileName(filePath);
                     string folderName = Path.GetDirectoryName(filePath);
-                    FileSystemAccess.DeleteFile(folderName, fileName);
+                    // Delete the file
+                    try{
+                        _filesystemAccess.DeleteFile(folderName, fileName);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error deleting file {fileName} in {FolderName}", fileName, folderName);
+                        // Decide what action to take if deletion fails
+                    }
                     _logger.LogInformation($"Deleted file: {filePath}");
                 }
                 catch (Exception ex)

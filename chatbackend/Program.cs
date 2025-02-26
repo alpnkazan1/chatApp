@@ -1,6 +1,7 @@
 using chatbackend.Data;
 using chatbackend.Interfaces;
 using chatbackend.Models;
+using chatbackend.Repository;
 using chatbackend.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -9,11 +10,39 @@ using Microsoft.EntityFrameworkCore.Storage.Json;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information) // Reduce Microsoft's log spam
+    .Enrich.FromLogContext() // Enrich logs with context properties (e.g., request ID)
+    .WriteTo.File(
+        path: "Logs/log-.txt", // Log file path
+        rollingInterval: RollingInterval.Day, // Create a new log file each day
+        outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}] [{Level:u3}] {Message:lj}{NewLine}{Exception}" // Log format
+    )
+    .CreateLogger();
+
+builder.Services.AddSerilog();
+
+
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+
+// Dependency injection for my FileAccess
+// Using UrlSigningKey we generate a temporary fake url. 
+// We send this url to client and when client requests this url from us we decrypt the url and send the file
+builder.Services.AddScoped(sp =>
+{
+    var logger = sp.GetRequiredService<ILogger<FileSystemAccess>>();
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var baseFilePath = configuration["FileStorage:BaseFilePath"];
+    var urlSigningKey = configuration["UrlSigningKey"];
+
+    return new FileSystemAccess(logger, baseFilePath, urlSigningKey);
+});
 
 // This is the connection to postgresql database
 // Connection String needs to be customized depending on sql database

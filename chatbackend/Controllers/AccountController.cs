@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using chatbackend.Data;
 using chatbackend.DTOs.Account;
 using chatbackend.Interfaces;
 using chatbackend.Models;
+using chatbackend.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,11 +23,18 @@ namespace chatbackend.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<AuthController> _logger;
+        private readonly FileSystemAccess _fileSystemAccess;
+        private readonly ApplicationDBContext _context;
+
         public AuthController(UserManager<User> userManager, 
                                 ITokenService tokenService, 
                                 SignInManager<User> signInManager,
-                                ILogger<AuthController> logger)
+                                ILogger<AuthController> logger,
+                                FileSystemAccess fileSystemAccess,
+                                ApplicationDBContext context)
         {
+            _fileSystemAccess = fileSystemAccess;
+            _context = context;
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
@@ -189,6 +199,44 @@ namespace chatbackend.Controllers
             return Ok("Logged out successfully.");
         }
 
-        
+        [HttpGet("check")]
+        [Authorize] // Requires authentication
+        public async Task<IActionResult> CheckAuthentication()
+        {
+            // Get the user ID from the authenticated user's claims
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                _logger.LogWarning("User is authenticated but NameIdentifier claim is missing.");
+                return Unauthorized(); // Or a more specific error message
+            }
+
+            // Fetch user information from the database
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                _logger.LogWarning($"User with ID {userId} not found in the database.");
+                return NotFound("User not found");
+            }
+
+            //Generate avatar and store it as URL
+            string avatarUrl = null;
+            if (user.AvatarId.HasValue) // Check if AvatarId has a value (is not null)
+            {
+                avatarUrl = _fileSystemAccess.GenerateSecuredAvatarURL(user.AvatarId.Value.ToString());
+            }
+            // Construct the response object
+            var response = new AuthCheckDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Avatar = avatarUrl // Server should return a URL for avatar
+            };
+
+            return Ok(response);
+        }
     }
 }

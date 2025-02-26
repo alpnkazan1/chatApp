@@ -16,6 +16,6 @@ public class MessageResponseDto
         public Guid? FileId { get; set; }
         public string? FileExtension { get; set; }
         public DateTime Timestamp { get; set; }
-        public string FileUrl { get; set; } // Add this property for the secured URL
+        public string? FileUrl { get; set; } // Add this property for the secured URL
     }
 }
