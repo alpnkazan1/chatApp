@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using chatbackend.Helpers;
 using chatbackend.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
@@ -20,14 +19,12 @@ namespace chatbackend.Controllers
     public class MessageController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
-        private readonly IUrlHelper _urlHelper;
         private readonly ILogger<MessageController> _logger;
         private readonly FileSystemAccess _fileSystemAccess;
 
-        public MessageController(chatbackend.Data.ApplicationDBContext context, IUrlHelper urlHelper, ILogger<MessageController> logger, FileSystemAccess fileSystemAccess)
+        public MessageController(ApplicationDBContext context, ILogger<MessageController> logger, FileSystemAccess fileSystemAccess)
         {
             _context = context;
-            _urlHelper = urlHelper;
             _logger = logger;
             _fileSystemAccess = fileSystemAccess;
         }
@@ -67,7 +64,7 @@ namespace chatbackend.Controllers
                     {
                         string folderName = _fileSystemAccess.GetSubfolder((uint)message.FileFlag);
                         string fileNameWithExtension = message.FileId.ToString() + "." + message.FileExtension;
-                        fileUrl = _fileSystemAccess.GenerateSecuredFileURL(folderName, fileNameWithExtension, _urlHelper);
+                        fileUrl = _fileSystemAccess.GenerateSecuredFileURL(folderName, fileNameWithExtension);
                     }
                     
                     var messageResponseDto = new MessageResponseDto
@@ -123,7 +120,7 @@ namespace chatbackend.Controllers
             {
                 string folderName = _fileSystemAccess.GetSubfolder((uint)message.FileFlag);
                 string fileNameWithExtension = message.FileId.ToString() + "." + message.FileExtension;
-                fileUrl = _fileSystemAccess.GenerateSecuredFileURL(folderName, fileNameWithExtension, _urlHelper);
+                fileUrl = _fileSystemAccess.GenerateSecuredFileURL(folderName, fileNameWithExtension);
             }
 
             try

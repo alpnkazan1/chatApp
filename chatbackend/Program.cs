@@ -5,6 +5,7 @@ using chatbackend.Repository;
 using chatbackend.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.Json;
 using Microsoft.IdentityModel.Tokens;
@@ -34,14 +35,15 @@ builder.Services.AddOpenApi();
 // Dependency injection for my FileAccess
 // Using UrlSigningKey we generate a temporary fake url. 
 // We send this url to client and when client requests this url from us we decrypt the url and send the file
-builder.Services.AddScoped(sp =>
+builder.Services.AddScoped<FileSystemAccess>(sp =>
 {
     var logger = sp.GetRequiredService<ILogger<FileSystemAccess>>();
     var configuration = sp.GetRequiredService<IConfiguration>();
     var baseFilePath = configuration["FileStorage:BaseFilePath"];
     var urlSigningKey = configuration["UrlSigningKey"];
+    var urlHelper = sp.GetRequiredService<IUrlHelper>();
 
-    return new FileSystemAccess(logger, baseFilePath, urlSigningKey);
+    return new FileSystemAccess(logger, baseFilePath, urlSigningKey, urlHelper);
 });
 
 // This is the connection to postgresql database

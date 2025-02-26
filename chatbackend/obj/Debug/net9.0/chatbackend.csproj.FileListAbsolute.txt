@@ -273,3 +273,12 @@
 /home/derail/Desktop/chatApp/chatbackend/obj/Debug/net9.0/chatback.160C6A43.Up2Date
 /home/derail/Desktop/chatApp/chatbackend/obj/Debug/net9.0/chatbackend.genruntimeconfig.cache
 /home/derail/Desktop/chatApp/chatbackend/obj/Debug/net9.0/ref/chatbackend.dll
+/home/derail/Desktop/chatApp/chatbackend/bin/Debug/net9.0/Serilog.dll
+/home/derail/Desktop/chatApp/chatbackend/bin/Debug/net9.0/Serilog.AspNetCore.dll
+/home/derail/Desktop/chatApp/chatbackend/bin/Debug/net9.0/Serilog.Extensions.Hosting.dll
+/home/derail/Desktop/chatApp/chatbackend/bin/Debug/net9.0/Serilog.Extensions.Logging.dll
+/home/derail/Desktop/chatApp/chatbackend/bin/Debug/net9.0/Serilog.Formatting.Compact.dll
+/home/derail/Desktop/chatApp/chatbackend/bin/Debug/net9.0/Serilog.Settings.Configuration.dll
+/home/derail/Desktop/chatApp/chatbackend/bin/Debug/net9.0/Serilog.Sinks.Console.dll
+/home/derail/Desktop/chatApp/chatbackend/bin/Debug/net9.0/Serilog.Sinks.Debug.dll
+/home/derail/Desktop/chatApp/chatbackend/bin/Debug/net9.0/Serilog.Sinks.File.dll
