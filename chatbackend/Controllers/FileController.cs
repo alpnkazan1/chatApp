@@ -14,6 +14,10 @@ using chatbackend.Service;
 
 namespace chatbackend.Controllers
 {
+    /* 
+        Files are usually sent through websocket 
+            with the only current exception being uploading of avatar
+    */
     [ApiController]
     [Route("content")]
     public class FileController : ControllerBase
@@ -21,12 +25,12 @@ namespace chatbackend.Controllers
         private readonly ILogger<FileController> _logger;
         private readonly FileSystemAccess _fileSystemAccess;
         private readonly ApplicationDBContext _context;
-        private readonly AuthorizationCheckService _authCheckService;
+        private readonly MyAuthorizationService _authCheckService;
 
         public FileController(ILogger<FileController> logger, 
                             FileSystemAccess fileSystemAccess, 
                             ApplicationDBContext context,
-                            AuthorizationCheckService authCheckService)
+                            MyAuthorizationService authCheckService)
         {
             _logger = logger;
             _fileSystemAccess = fileSystemAccess;
