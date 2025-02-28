@@ -12,7 +12,7 @@ import {useUserStore} from '../../lib/userStore';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Chat = () => {
-    const { currentUser } = useUserStore();
+    const { currentUser, accessToken } = useUserStore();
     const { selectedChat, addMessage, messages } = useChatStore();
     const [open,setOpen] = useState(false);
     const [text,setText] = useState("");
@@ -33,13 +33,16 @@ const Chat = () => {
         endRef.current?.scrollIntoView({behavior:"smooth"})
 
         // Open WebSocket connection
-        // Open WebSocket connection
         const newSocket = io(`${API_BASE_URL}/chatHub`, {
-            query: {
-                chatId: selectedChat.chatId,
-                accessToken: token, // Include token in query
+            auth: {
+                token: accessToken, // Send token via `auth`
             },
+            query: {
+                chatId: selectedChat.chatId, // Only chatId in query
+            },
+            transports: ["websocket"], // Force WebSocket to avoid polling
         });
+        
 
         // Listen for new incoming messages 
         // and immediately store them in Zustand

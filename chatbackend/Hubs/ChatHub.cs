@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims; // Add this
 using chatbackend.Service;
 using Microsoft.AspNetCore.Authorization;
-using chatbackend.Interfaces; // Add this
+using chatbackend.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
+using chatbackend.DTOs.Messages; // Add this
 
 public class ChatHub : Hub
 {
@@ -14,20 +16,25 @@ public class ChatHub : Hub
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly MyAuthorizationService _authorizationService;
     private readonly ITokenService _tokenService;
+    private readonly IMessageService _messageService;
 
     public ChatHub(ILogger<ChatHub> logger, IHttpContextAccessor httpContextAccessor,
-                   MyAuthorizationService authorizationService, ITokenService tokenService)
+                   MyAuthorizationService authorizationService, ITokenService tokenService,
+                   IMessageService messageService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         _authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
         _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
+        _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
     }
 
     public override async Task OnConnectedAsync()
     {
-        // 1. Get the access token from the query string
-        string accessToken = Context.GetHttpContext().Request.Query["access_token"];
+        var httpContext = Context.GetHttpContext();
+        // 1. Get the access token securely
+        string accessToken = httpContext?.Request.Headers["Authorization"]
+            .ToString().Replace("Bearer ", "", StringComparison.OrdinalIgnoreCase);
 
         if (string.IsNullOrEmpty(accessToken))
         {
@@ -37,7 +44,7 @@ public class ChatHub : Hub
         }
 
         // 2. Validate the token using your TokenService
-        ClaimsPrincipal principal = _tokenService.ValidateToken(accessToken);
+        var principal = _tokenService?.ValidateToken(accessToken);
 
         if (principal == null)
         {
@@ -46,8 +53,9 @@ public class ChatHub : Hub
             return;
         }
 
-        // 3. Get the UserId from the validated claims
-        string userId = principal.FindFirstValue(ClaimTypes.Sub);  // Using JwtRegisteredClaimNames.Sub for user ID
+        // 3. Get the UserId
+        string userId = principal.FindFirstValue(JwtRegisteredClaimNames.Sub) 
+                        ?? principal.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (string.IsNullOrEmpty(userId))
         {
@@ -58,7 +66,7 @@ public class ChatHub : Hub
 
 
         // 4. Get the chatId from the query string
-        string chatIdString = Context.GetHttpContext().Request.Query["chatId"];
+        string chatIdString = httpContext?.Request.Query["chatId"];
 
         if (!Guid.TryParse(chatIdString, out Guid chatId))
         {
@@ -68,31 +76,37 @@ public class ChatHub : Hub
         }
 
         // 5. Check Authorization
-        bool isAuthorized = await _authorizationService.IsAuthorizedForChat(userId, chatId);
+        bool isAuthorized = _authorizationService != null && await _authorizationService.IsAuthorizedForChat(userId, chatId);
 
         if (!isAuthorized)
         {
             _logger.LogWarning($"User '{userId}' is not authorized for chatId '{chatId}'. ConnectionId: {Context.ConnectionId}");
+            await Task.Delay(0);
             Context.Abort();
             return;
         }
 
 
-        //Join a Group for this chatId, so that you can send messages to just that chat.
+        // 6. Join chat group
         await Groups.AddToGroupAsync(Context.ConnectionId, chatId.ToString());
 
         _logger.LogInformation($"Client connected to chatId '{chatId}' as user '{userId}'. ConnectionId: {Context.ConnectionId}");
 
-        Context.User = principal;  // Setting Hub Context's User, since the hub's user isn't getting set automatically
         await base.OnConnectedAsync();
-
     }
 
     public override async Task OnDisconnectedAsync(Exception exception)
     {
-        string chatIdString = Context.GetHttpContext().Request.Query["chatId"];
+        var httpContext = Context.GetHttpContext();
+        string chatIdString = httpContext?.Request.Query["chatId"];
 
-        if (!string.IsNullOrEmpty(chatIdString) && Guid.TryParse(chatIdString, out Guid chatId)) //TryParse here too
+        // If middleware stored chatId in Context.Items, retrieve it
+        if (string.IsNullOrEmpty(chatIdString) && Context.Items.TryGetValue("chatId", out var chatIdObj))
+        {
+            chatIdString = chatIdObj?.ToString();
+        }
+
+        if (!string.IsNullOrEmpty(chatIdString) && Guid.TryParse(chatIdString, out Guid chatId))
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatId.ToString());
             _logger.LogInformation($"Client disconnected from chatId '{chatId}'. ConnectionId: {Context.ConnectionId}");
@@ -102,57 +116,46 @@ public class ChatHub : Hub
             _logger.LogWarning($"Client disconnected without a valid chatId. ConnectionId: {Context.ConnectionId}");
         }
 
+        // Log any exception (if exists)
+        if (exception != null)
+        {
+            _logger.LogError(exception, $"Exception occurred during disconnection. ConnectionId: {Context.ConnectionId}");
+        }
+
         await base.OnDisconnectedAsync(exception);
     }
 
-    // Example method to handle a new message from the front-end.
-    // The front-end sends a JSON string.
-    public async Task ReceiveMessage(string chatId, string jsonMessage)
+    public async Task SendMessage(MessageSendDto messageDto)
     {
-        try
-        {
-            // Deserialize the JSON message to a C# object (optional, but recommended).
-            var messageData = System.Text.Json.JsonSerializer.Deserialize<ChatMessage>(jsonMessage);
+        string userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            // TODO: Implement message handling logic (save to database, etc.)
-            _logger.LogInformation($"Received message for chatId '{chatId}': {jsonMessage}");
-
-            // Broadcast the message to all clients in the specified chat group.
-            // We send back a JSON string.
-            await Clients.Group(chatId).SendAsync("ReceiveMessage", System.Text.Json.JsonSerializer.Serialize(new { chatId = chatId, text = messageData.Text, sender = Context.UserIdentifier }));
-        }
-        catch (System.Text.Json.JsonException ex)
+        if (string.IsNullOrEmpty(userId))
         {
-            _logger.LogError($"Error deserializing JSON message: {ex.Message}");
-            // Consider sending an error message back to the client.
+            _logger.LogWarning($"Unauthorized user attempted to send a message. ConnectionId: {Context.ConnectionId}");
+            Context.Abort();
+            return;
         }
+
+        // Check if the user is authorized to send messages in this chat
+        bool isAuthorized = await _authorizationService.IsAuthorizedForChat(userId, messageDto.ChatId);
+        if (!isAuthorized)
+        {
+            _logger.LogWarning($"User {userId} is not authorized to send messages in chat {messageDto.ChatId}. ConnectionId: {Context.ConnectionId}");
+            return;
+        }
+
+        // Save message using MessageService
+        var messageReqDto = await _messageService.SaveMessageAsync(userId, messageDto);
+
+        if (messageReqDto == null)
+        {
+            _logger.LogError($"Failed to save message from user {userId} in chat {messageDto.ChatId}");
+            return;
+        }
+
+        // Broadcast the message to all clients in the chat
+        await Clients.Group(messageDto.ChatId.ToString()).SendAsync("newMessage", messageReqDto);
+
+        _logger.LogInformation($"Message sent in chat {messageDto.ChatId} by user {userId}. Message ID: {messageReqDto.MessageId}");
     }
-
-    // Example Last Seen Update (receiving a JSON string)
-    public async Task UpdateLastSeen(string chatId, string jsonLastSeen)
-    {
-        try
-        {
-            var lastSeenData = System.Text.Json.JsonSerializer.Deserialize<LastSeenUpdate>(jsonLastSeen);
-            // TODO: Implement last seen update logic (save to database, etc.)
-            _logger.LogInformation($"Received last seen update for chatId '{chatId}': {jsonLastSeen}");
-
-            await Clients.Group(chatId).SendAsync("ReceiveLastSeenUpdate", System.Text.Json.JsonSerializer.Serialize(lastSeenData));
-        }
-        catch (System.Text.Json.JsonException ex)
-        {
-            _logger.LogError($"Error deserializing JSON last seen update: {ex.Message}");
-        }
-    }
-}
-
-// Example C# classes for deserializing JSON messages
-public class ChatMessage
-{
-    public string Text { get; set; }
-}
-
-public class LastSeenUpdate
-{
-    public DateTime LastSeen { get; set; }
 }

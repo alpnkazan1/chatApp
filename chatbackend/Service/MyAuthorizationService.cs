@@ -125,5 +125,15 @@ namespace chatbackend.Service
 
             return file != null;
         }
+    
+        public async Task<bool> IsBlocked(string user1Id, string user2Id)
+        {
+            var chat = await _context.Chats
+                .FirstOrDefaultAsync(c =>
+                    ((c.User1Id.ToString() == user1Id && c.User2Id.ToString() == user2Id) || (c.User1Id.ToString() == user2Id && c.User2Id.ToString() == user1Id)) &&
+                    (c.BlockFlag == 1 || c.BlockFlag == 2 || c.BlockFlag == 3));
+
+            return chat != null;
+        }
     }
 }

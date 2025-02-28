@@ -95,6 +95,7 @@ builder.Services.AddAuthentication(options => {
     };
 });
 
+builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization(options =>
 {

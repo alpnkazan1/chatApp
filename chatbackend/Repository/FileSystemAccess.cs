@@ -1,18 +1,6 @@
 using chatbackend.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;  // Import IWebHostEnvironment
-using Microsoft.Extensions.Logging;
 using chatbackend.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Text;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Http.HttpResults;
-using chatbackend.Service;
 
 namespace chatbackend.Repository
 {
@@ -56,25 +44,6 @@ namespace chatbackend.Repository
             {
                 throw; // Re-throw the exception
             }
-        }
-
-        public async Task<bool> IsAuthorizedForFile(ApplicationDBContext context, string userId, string folderName, string fileNameWithExtension)
-        {
-            string filePath = Path.Combine(folderName, fileNameWithExtension);
-            var message = await context.Messages
-                .FirstOrDefaultAsync(m => m.FileId.ToString() == filePath && (m.SenderId == userId || m.ReceiverId == userId));
-
-            return message != null;
-        }
-
-        public async Task<bool> IsBlocked(ApplicationDBContext context, string user1Id, string user2Id)
-        {
-            var chat = await context.Chats
-                .FirstOrDefaultAsync(c =>
-                    ((c.User1Id == user1Id && c.User2Id == user2Id) || (c.User1Id == user2Id && c.User2Id == user1Id)) &&
-                    (c.BlockFlag == 1 || c.BlockFlag == 2 || c.BlockFlag == 3));
-
-            return chat != null;
         }
 
         private string GetContentType(string path)

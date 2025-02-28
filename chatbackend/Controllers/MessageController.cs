@@ -22,10 +22,10 @@ namespace chatbackend.Controllers
         private readonly ApplicationDBContext _context;
         private readonly ILogger<MessageController> _logger;
         private readonly FileSystemAccess _fileSystemAccess;
-        private readonly AuthorizationCheckService _authCheckService;
+        private readonly MyAuthorizationService _authCheckService;
 
         public MessageController(ApplicationDBContext context, ILogger<MessageController> logger, 
-                                FileSystemAccess fileSystemAccess, AuthorizationCheckService authCheckService)
+                                FileSystemAccess fileSystemAccess, MyAuthorizationService authCheckService)
         {
             _context = context;
             _logger = logger;
@@ -57,7 +57,7 @@ namespace chatbackend.Controllers
                 return NotFound("No messages found with this chat id.");
 
             //Check authorization and construct secured urls to serve from frontend.
-            var messageResponses = new List<MessageResponseDto>();
+            var messageResponses = new List<MessageReqDto>();
             foreach (var message in messages)
             {
                 try
@@ -71,7 +71,7 @@ namespace chatbackend.Controllers
                         fileUrl = _authCheckService.GenerateSecuredFileURL(folderName, fileNameWithExtension);
                     }
                     
-                    var messageResponseDto = new MessageResponseDto
+                    var messageResponseDto = new MessageReqDto
                     {
                         MessageId = message.MessageId,
                         ChatId = message.ChatId,
@@ -129,7 +129,7 @@ namespace chatbackend.Controllers
 
             try
             {
-                var messageResponseDto = new MessageResponseDto
+                var messageResponseDto = new MessageReqDto
                 {
                     MessageId = message.MessageId,
                     ChatId = message.ChatId,
