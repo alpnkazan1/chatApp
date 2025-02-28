@@ -9,8 +9,8 @@ public class MessageResponseDto
     {
         public Guid MessageId { get; set; }
         public Guid ChatId { get; set; }
-        public string SenderId { get; set; }
-        public string ReceiverId { get; set; }
+        public Guid SenderId { get; set; }
+        public Guid ReceiverId { get; set; }
         public string? MessageText { get; set; }
         public uint FileFlag { get; set; }
         public Guid? FileId { get; set; }

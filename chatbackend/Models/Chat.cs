@@ -9,9 +9,9 @@ namespace chatbackend.Models
     {
         public Guid ChatId { get; set; }
 
-        public string User1Id { get; set; }
+        public Guid User1Id { get; set; }
 
-        public string User2Id { get; set; }
+        public Guid User2Id { get; set; }
 
         public User User1 { get; set; }
         public User User2 { get; set; }

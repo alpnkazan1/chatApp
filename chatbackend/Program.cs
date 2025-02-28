@@ -88,6 +88,14 @@ builder.Services.AddAuthentication(options => {
     };
 });
 
+      
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("UserOwnsResource", policy =>
+        policy.RequireClaim("userid"));
+});
+
+    
 
 // These are dependency injections, they allow for implicit construction of interfaced models
 // Controllers utilize implicit declarations. For example:

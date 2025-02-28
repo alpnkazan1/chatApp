@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Http.HttpResults;
+using chatbackend.Service;
 
 namespace chatbackend.Repository
 {
@@ -25,16 +26,11 @@ namespace chatbackend.Repository
 
         private readonly ILogger _logger;
         private readonly string _baseFilePath;
-        private readonly string _urlSigningKey;
-        private readonly IUrlHelper _urlHelper;
 
-        public FileSystemAccess(ILogger<FileSystemAccess> logger, string baseFilePath, 
-                                string urlSigningKey, IUrlHelper urlHelper)
+        public FileSystemAccess(ILogger<FileSystemAccess> logger, string baseFilePath)
         {
             _logger = logger;
             _baseFilePath = baseFilePath;
-            _urlSigningKey = urlSigningKey;
-            _urlHelper = urlHelper;
         }
 
 
@@ -145,57 +141,5 @@ namespace chatbackend.Repository
             return Path.Combine(_baseFilePath, subfolder, fileNameWithExtension);
         }
 
-        public async Task<bool> IsAuthorizedForChat(ApplicationDBContext context, string userId, Guid chatId)
-        {
-            // If user is authorized for a single message they are authorized for all messages.
-            var message = await context.Chats
-                .FirstOrDefaultAsync(m => m.ChatId == chatId && (m.User1Id == userId || m.User1Id == userId));
-
-            return message != null;
-        }
-
-        public string GenerateSecuredFileURL(string folderName, string fileNameWithExtension, int expirationHours = 1)
-        {
-            var expirationTime = DateTime.UtcNow.AddHours(expirationHours);
-            var key = Guid.NewGuid().ToString(); // Create accessKey
-
-            // Create the URL
-            var url = _urlHelper.Action("GetFile", "Content", new { folderName = _baseFilePath + "/" + folderName, fileName = fileNameWithExtension, accessKey = key, expires = expirationTime.Ticks }, "https");
-
-            //Sign the url
-            var signedUrl = SignUrl(url, _urlSigningKey);
-
-            return signedUrl;
-        }
-
-        private string SignUrl(string url, string key)
-        {
-            var encoding = new ASCIIEncoding();
-            byte[] keyByte = encoding.GetBytes(key);
-            byte[] messageBytes = encoding.GetBytes(url);
-            using (var hmacsha256 = new HMACSHA256(keyByte))
-            {
-                byte[] hashmessage = hmacsha256.ComputeHash(messageBytes);
-                string hash = string.Concat(hashmessage.Select(b => b.ToString("x2")));
-                return url + "&hash=" + hash;
-            }
-        }
-
-        public string? GenerateSecuredAvatarURL(string avatarId, int expirationHours = 24)
-        {
-                if (avatarId == "") return null;
-                string folderName = "avatars"; // Avatar files will be in this folder.
-                string fileNameWithExtension = avatarId + ".png"; // You can modify the extensions later
-
-                var expirationTime = DateTime.UtcNow.AddHours(expirationHours);
-                var key = Guid.NewGuid().ToString(); // Create acessKey
-
-                var url = _urlHelper.Action("GetFile", "Content", new {folderName = _baseFilePath + "/" + folderName, fileName = fileNameWithExtension, accessKey = key, expires = expirationTime.Ticks}, "https");
-
-                //Sign the url
-                var signedUrl = SignUrl(url, _urlSigningKey);
-
-                return signedUrl;
-        }
     }
 }

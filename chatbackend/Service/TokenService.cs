@@ -25,6 +25,7 @@ namespace chatbackend.Service
             _context = context;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
         }
+        
         public string CreateToken(User user)
         {
             var claims = new List<Claim>
@@ -107,6 +108,34 @@ namespace chatbackend.Service
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
+        
+        public ClaimsPrincipal ValidateToken(string token)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var validationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = _key,
+                    ValidateIssuer = true,
+                    ValidIssuer = _config["JWT:Issuer"], //Read config.
+                    ValidateAudience = true,
+                    ValidAudience = _config["JWT:Audience"], // Read config
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero // Optional: Adjust clock skew
+                };
 
+                SecurityToken validatedToken;
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+
+                return principal;
+            }
+            catch (Exception)
+            {
+                // Token is invalid
+                return null;
+            }
+        }
     }
 }

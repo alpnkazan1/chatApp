@@ -46,6 +46,7 @@ namespace chatbackend.Data
 
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<FileAccessControl> ACL { get; set; }
 
         // After creating new DB entities like below you first run: 
         // dotnet ef migrations add <MigrationName>  
@@ -54,6 +55,26 @@ namespace chatbackend.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+                
+            //Adds composite key for fileId and UserId
+            builder.Entity<FileAccessControl>(entity =>
+            {
+                // Indexing for ACL table
+                entity.HasIndex(c => new { c.FileId, c.UserId })
+                .IsUnique();
+
+                entity.HasIndex(e => e.FileId);
+
+                // FileAccessControl entity relationship with foreign keys
+                entity.HasOne(fac => fac.User)
+                .WithMany()
+                .HasForeignKey(fac => fac.UserId);
+
+                entity.HasOne(e => e.Message)
+                .WithMany()
+                .HasForeignKey(fac => fac.MessageId);
+
+            });
 
             //Chat entity configuration
             builder.Entity<Chat>(entity =>

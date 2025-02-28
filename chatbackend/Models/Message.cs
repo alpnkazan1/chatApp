@@ -10,9 +10,9 @@ namespace chatbackend.Models
         public Guid MessageId { get; set; }
         public Chat Chat { get; set; }
         public Guid ChatId { get; set; }
-        public string SenderId { get; set; }
+        public Guid SenderId { get; set; }
         public User Sender { get; set; }
-        public string ReceiverId { get; set; }
+        public Guid ReceiverId { get; set; }
         public User Receiver { get; set; }
         [MaxLength(1000)]
         public string? MessageText { get; set; }

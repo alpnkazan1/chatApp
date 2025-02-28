@@ -9,6 +9,7 @@ using System.Security.Claims;
 using chatbackend.Repository;
 using chatbackend.Data;
 using chatbackend.DTOs.Messages;
+using chatbackend.Service;
 
 
 namespace chatbackend.Controllers
@@ -21,12 +22,15 @@ namespace chatbackend.Controllers
         private readonly ApplicationDBContext _context;
         private readonly ILogger<MessageController> _logger;
         private readonly FileSystemAccess _fileSystemAccess;
+        private readonly AuthorizationCheckService _authCheckService;
 
-        public MessageController(ApplicationDBContext context, ILogger<MessageController> logger, FileSystemAccess fileSystemAccess)
+        public MessageController(ApplicationDBContext context, ILogger<MessageController> logger, 
+                                FileSystemAccess fileSystemAccess, AuthorizationCheckService authCheckService)
         {
             _context = context;
             _logger = logger;
             _fileSystemAccess = fileSystemAccess;
+            _authCheckService = authCheckService;
         }
 
         [HttpGet("{chatId}")]
@@ -35,7 +39,7 @@ namespace chatbackend.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 
-            bool isAuthorized = await _fileSystemAccess.IsAuthorizedForChat(_context, userId, chatId);
+            bool isAuthorized = await _authCheckService.IsAuthorizedForChat(_context, userId, chatId);
 
             if (!isAuthorized)
             {
@@ -64,7 +68,7 @@ namespace chatbackend.Controllers
                     {
                         string folderName = _fileSystemAccess.GetSubfolder((uint)message.FileFlag);
                         string fileNameWithExtension = message.FileId.ToString() + "." + message.FileExtension;
-                        fileUrl = _fileSystemAccess.GenerateSecuredFileURL(folderName, fileNameWithExtension);
+                        fileUrl = _authCheckService.GenerateSecuredFileURL(folderName, fileNameWithExtension);
                     }
                     
                     var messageResponseDto = new MessageResponseDto
@@ -107,7 +111,7 @@ namespace chatbackend.Controllers
             {
                 return NotFound("No messages found with this id.");
             }
-            bool isAuthorized = await _fileSystemAccess.IsAuthorizedForChat(_context, userId, message.ChatId);
+            bool isAuthorized = await _authCheckService.IsAuthorizedForChat(_context, userId, message.ChatId);
 
             if (!isAuthorized)
             {
@@ -120,7 +124,7 @@ namespace chatbackend.Controllers
             {
                 string folderName = _fileSystemAccess.GetSubfolder((uint)message.FileFlag);
                 string fileNameWithExtension = message.FileId.ToString() + "." + message.FileExtension;
-                fileUrl = _fileSystemAccess.GenerateSecuredFileURL(folderName, fileNameWithExtension);
+                fileUrl = _authCheckService.GenerateSecuredFileURL(folderName, fileNameWithExtension);
             }
 
             try
