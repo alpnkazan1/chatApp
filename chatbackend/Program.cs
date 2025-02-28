@@ -6,6 +6,8 @@ using chatbackend.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.Json;
 using Microsoft.IdentityModel.Tokens;
@@ -32,19 +34,6 @@ builder.Services.AddSerilog();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-// Dependency injection for my FileAccess
-// Using UrlSigningKey we generate a temporary fake url. 
-// We send this url to client and when client requests this url from us we decrypt the url and send the file
-builder.Services.AddScoped<FileSystemAccess>(sp =>
-{
-    var logger = sp.GetRequiredService<ILogger<FileSystemAccess>>();
-    var configuration = sp.GetRequiredService<IConfiguration>();
-    var baseFilePath = configuration["FileStorage:BaseFilePath"];
-    var urlSigningKey = configuration["UrlSigningKey"];
-    var urlHelper = sp.GetRequiredService<IUrlHelper>();
-
-    return new FileSystemAccess(logger, baseFilePath, urlSigningKey, urlHelper);
-});
 
 // This is the connection to postgresql database
 // Connection String needs to be customized depending on sql database
@@ -86,21 +75,47 @@ builder.Services.AddAuthentication(options => {
             System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
         )
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            // Add authentication token from query string
+            var accessToken = context.Request.Query["accessToken"];
+
+            // If the request is for our hub...
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) &&
+                (path.StartsWithSegments("/chatHub")))
+            {
+                // Read the token out of the query string
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
-      
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("UserOwnsResource", policy =>
         policy.RequireClaim("userid"));
 });
 
-    
 
 // These are dependency injections, they allow for implicit construction of interfaced models
 // Controllers utilize implicit declarations. For example:
 // Instead of creating StockRepository, stock controller creates IStockRepository
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAuthorizationService, MyAuthorizationService>();
+builder.Services.AddScoped<IUrlHelper>(provider =>
+{
+    var actionContext = provider.GetRequiredService<IActionContextAccessor>().ActionContext;
+    var factory = provider.GetRequiredService<IUrlHelperFactory>();
+    return factory.GetUrlHelper(actionContext);
+});
+builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
 
 var app = builder.Build();
 

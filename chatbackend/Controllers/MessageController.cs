@@ -39,7 +39,7 @@ namespace chatbackend.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 
-            bool isAuthorized = await _authCheckService.IsAuthorizedForChat(_context, userId, chatId);
+            bool isAuthorized = await _authCheckService.IsAuthorizedForChat(userId, chatId);
 
             if (!isAuthorized)
             {
@@ -111,7 +111,7 @@ namespace chatbackend.Controllers
             {
                 return NotFound("No messages found with this id.");
             }
-            bool isAuthorized = await _authCheckService.IsAuthorizedForChat(_context, userId, message.ChatId);
+            bool isAuthorized = await _authCheckService.IsAuthorizedForChat(userId, message.ChatId);
 
             if (!isAuthorized)
             {

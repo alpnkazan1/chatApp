@@ -45,6 +45,8 @@ const Login = () =>{
             if (response.ok) {
                 toast.success("Login successful!");
                 fetchUserInfo();
+                useUserStore.getState().setAccess(data.accessToken); // Set the access token
+                useUserStore.getState().setRefresh(data.refreshToken);  // Set the refresh token
                 // No need to store token manually; it's set as an httpOnly cookie by the backend.
                 // You can update your auth context or state here if necessary.
             } else {

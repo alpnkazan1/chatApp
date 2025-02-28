@@ -8,6 +8,7 @@ using chatbackend.DTOs.Account;
 using chatbackend.Interfaces;
 using chatbackend.Models;
 using chatbackend.Repository;
+using chatbackend.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,21 +18,23 @@ namespace chatbackend.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AccountController : ControllerBase
     {
         private readonly ITokenService _tokenService;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly ILogger<AuthController> _logger;
+        private readonly ILogger<AccountController> _logger;
         private readonly FileSystemAccess _fileSystemAccess;
         private readonly ApplicationDBContext _context;
+        private readonly MyAuthorizationService _authorizationCheckService;
 
-        public AuthController(UserManager<User> userManager, 
+        public AccountController(UserManager<User> userManager, 
                                 ITokenService tokenService, 
                                 SignInManager<User> signInManager,
-                                ILogger<AuthController> logger,
+                                ILogger<AccountController> logger,
                                 FileSystemAccess fileSystemAccess,
-                                ApplicationDBContext context)
+                                ApplicationDBContext context,
+                                MyAuthorizationService authorizationCheckService)
         {
             _fileSystemAccess = fileSystemAccess;
             _context = context;
@@ -39,6 +42,7 @@ namespace chatbackend.Controllers
             _tokenService = tokenService;
             _signInManager = signInManager;
             _logger = logger;
+            _authorizationCheckService = authorizationCheckService;
         }
 
         [HttpPost("login")]      
@@ -225,7 +229,7 @@ namespace chatbackend.Controllers
             string avatarUrl = null;
             if (user.AvatarId.HasValue) // Check if AvatarId has a value (is not null)
             {
-                avatarUrl = _fileSystemAccess.GenerateSecuredAvatarURL(user.AvatarId.Value.ToString());
+                avatarUrl = _authorizationCheckService.GenerateSecuredAvatarURL(user.AvatarId.Value.ToString());
             }
             // Construct the response object
             var response = new AuthCheckDto

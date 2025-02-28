@@ -36,7 +36,7 @@ namespace chatbackend.Controllers
 
         [HttpGet("file/{folderName}/{fileName}")]
         [Authorize]
-        public async Task<IActionResult> GetFile(string folderName, string fileName, string accessKey, long expires, string hash)
+        public async Task<IActionResult> GetFile(string folderName, string fileName, long expires, string hash)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace chatbackend.Controllers
                 }
 
                 //if the file is tampered with, then throw forbidden, which is a major red flag: 
-                if (!_authCheckService.IsHashValid(folderName, fileName, accessKey, expires, hash))
+                if (!_authCheckService.IsHashValid(folderName, fileName, expires, hash))
                 {
                     return Forbid(); //Or Unauthorized.
                 }

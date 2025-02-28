@@ -33,8 +33,12 @@ const Chat = () => {
         endRef.current?.scrollIntoView({behavior:"smooth"})
 
         // Open WebSocket connection
-        const newSocket = io(API_BASE_URL, {
-            query: { chatId: selectedChat.chatId },
+        // Open WebSocket connection
+        const newSocket = io(`${API_BASE_URL}/chatHub`, {
+            query: {
+                chatId: selectedChat.chatId,
+                accessToken: token, // Include token in query
+            },
         });
 
         // Listen for new incoming messages 
@@ -58,11 +62,6 @@ const Chat = () => {
         };
     },[selectedChat]);
 
-    const handleEmoji = e =>{
-        setText((prev) => prev + e.emoji);
-        setOpen(false);
-    };
-
     const handleSendMessage = async () => {
         if (!text.trim() && !image) return;
     
@@ -80,6 +79,11 @@ const Chat = () => {
 
         setText("");
         setImage(null);
+    };
+
+    const handleEmoji = e =>{
+        setText((prev) => prev + e.emoji);
+        setOpen(false);
     };
 
     const handleImageClick = () => {

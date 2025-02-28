@@ -4,6 +4,8 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const useUserStore = create((set) => ({
     currentUser: null,
     isLoading: true,
+    accessToken: null,
+    refreshToken: null,
 
     // Fetch user info from server
     fetchUserInfo: async () => {
@@ -35,6 +37,12 @@ export const useUserStore = create((set) => ({
         }
     },
 
+    // Set Access Token on User
+    setAccess: (token) => set({accessToken: token}),
+
+    // Set Refresh Token on User
+    setRefresh: (token) => set({refreshToken: token}),
+    
     // Clear user data (log out)
     clearUser: () => set({ currentUser: null }),
 }));
