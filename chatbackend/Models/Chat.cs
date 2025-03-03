@@ -13,11 +13,15 @@ namespace chatbackend.Models
 
         public Guid User2Id { get; set; }
 
-        public User User1 { get; set; }
-        public User User2 { get; set; }
+        [Required]
+        public required User User1 { get; set; }
+        [Required]
+        public required User User2 { get; set; }
 
-        public string UserName1 { get; set; }
-        public string UserName2 { get; set; }
+        [Required]
+        public required string UserName1 { get; set; }
+        [Required]
+        public required string UserName2 { get; set; }
 
         /*
             0 -> No blocking

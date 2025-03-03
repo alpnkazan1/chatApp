@@ -244,7 +244,7 @@ namespace chatbackend.Controllers
             }
 
             //Generate avatar and store it as URL
-            string avatarUrl = null;
+            string? avatarUrl = null;
             if (user.AvatarId.HasValue) // Check if AvatarId has a value (is not null)
             {
                 avatarUrl = _authorizationCheckService.GenerateSecuredAvatarURL(user.AvatarId.Value.ToString());
