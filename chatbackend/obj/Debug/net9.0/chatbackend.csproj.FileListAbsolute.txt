@@ -282,3 +282,4 @@
 /home/derail/Desktop/chatApp/chatbackend/bin/Debug/net9.0/Serilog.Sinks.Console.dll
 /home/derail/Desktop/chatApp/chatbackend/bin/Debug/net9.0/Serilog.Sinks.Debug.dll
 /home/derail/Desktop/chatApp/chatbackend/bin/Debug/net9.0/Serilog.Sinks.File.dll
+/home/derail/Desktop/chatApp/chatbackend/bin/Debug/net9.0/System.Net.WebSockets.WebSocketProtocol.dll

@@ -110,5 +110,46 @@ namespace chatbackend.Repository
             return Path.Combine(_baseFilePath, subfolder, fileNameWithExtension);
         }
 
+        public async Task<bool> UploadFileAsync(IFormFile file, uint fileFlag, Guid fileId)
+        {
+            if (file == null || file.Length == 0)
+            {
+                _logger.LogWarning("Invalid file upload attempt: file is null or empty.");
+                return false;
+            }
+
+            string subFolder = fileFlag switch
+            {
+                1 => "sounds",
+                2 => "images",
+                3 => "rest",
+                4 => "avatars",
+                _ => throw new ArgumentException("Invalid file flag")
+            };
+
+            string fileExtension = Path.GetExtension(file.FileName);
+            string fileDirectory = Path.Combine(_baseFilePath, subFolder);
+
+            if (!Directory.Exists(fileDirectory))
+            {
+                _logger.LogError("Directory does not exist: {Directory}", fileDirectory);
+                return false;
+            }
+
+            string filePath = Path.Combine(fileDirectory, $"{fileId}{fileExtension}");
+
+            try
+            {
+                await using var stream = new FileStream(filePath, FileMode.Create);
+                await file.CopyToAsync(stream);
+                _logger.LogInformation("File saved successfully at {FilePath}", filePath);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving file at {FilePath}", filePath);
+                return false;
+            }
+        }
     }
 }

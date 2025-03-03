@@ -93,7 +93,7 @@ namespace chatbackend.Controllers
         }     
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+        public async Task<IActionResult> Register([FromForm] RegisterDto registerDto)
         {
             try
             {
@@ -111,51 +111,68 @@ namespace chatbackend.Controllers
 
                 var createdUserResult = await _userManager.CreateAsync(appUser, registerDto.Password);
 
-                if(createdUserResult.Succeeded)
-                {
-                    _logger.LogInformation("User {Username} created successfully.", appUser.UserName);
-
-                    var roleResult = await _userManager.AddToRoleAsync(appUser, "ChatUser");
-
-                    if(roleResult.Succeeded)
-                    {
-                        _logger.LogInformation("User {Username} added to ChatUser role.", appUser.UserName);
-                        // Generate the tokens
-                        var accessToken = _tokenService.CreateToken(appUser);
-                        var refreshToken = _tokenService.GenerateRefreshToken();
-                        // Add refresh token to database
-                        appUser.RefreshToken = refreshToken;
-                        appUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(1);
-
-                        var updateResult = await _userManager.UpdateAsync(appUser);
-
-                        if (!updateResult.Succeeded)
-                        {
-                            _logger.LogError("Failed to update user {Username} with refresh token. Errors: {Errors}", appUser.UserName, updateResult.Errors);
-                            return StatusCode(500, "Failed to update user with refresh token.");
-                        }
-
-                        return Ok(
-                            new LogResponseDto
-                            {
-                                UserName = appUser.UserName,
-                                Email = appUser.Email,
-                                Token = accessToken,
-                                RefreshToken = refreshToken
-                            }
-                        );
-                    }
-                    else
-                    {
-                        _logger.LogError("Failed to add user {Username} to ChatUser role. Errors: {Errors}", appUser.UserName, roleResult.Errors);
-                        return StatusCode(500, roleResult.Errors);
-                    }
-                }
-                else
+                if (!createdUserResult.Succeeded)
                 {
                     _logger.LogError("Failed to create user {Email}. Errors: {Errors}", appUser.Email, createdUserResult.Errors);
                     return StatusCode(500, createdUserResult.Errors);
                 }
+
+                _logger.LogInformation("User {Username} created successfully.", appUser.UserName);
+
+                var roleResult = await _userManager.AddToRoleAsync(appUser, "ChatUser");
+
+                if (!roleResult.Succeeded)
+                {
+                    _logger.LogError("Failed to add user {Username} to ChatUser role. Errors: {Errors}", appUser.UserName, roleResult.Errors);
+                    return StatusCode(500, roleResult.Errors);
+                }
+
+                _logger.LogInformation("User {Username} added to ChatUser role.", appUser.UserName);
+
+                if (registerDto.Avatar != null)
+                {
+                    Guid avatarId = Guid.NewGuid();
+                    bool uploadSuccess = await _fileSystemAccess.UploadFileAsync(registerDto.Avatar, 4, avatarId);
+
+                    if (!uploadSuccess)
+                    {
+                        _logger.LogError("Failed to upload avatar for user {Username}", appUser.UserName);
+                        return StatusCode(500, "Failed to upload avatar.");
+                    }
+
+                    appUser.AvatarId = avatarId;
+                    var updateResult = await _userManager.UpdateAsync(appUser);
+
+                    if (!updateResult.Succeeded)
+                    {
+                        _logger.LogError("Failed to update user {Username} with avatar URL. Errors: {Errors}", appUser.UserName, updateResult.Errors);
+                        return StatusCode(500, "Failed to update user with avatar URL.");
+                    }
+                }
+
+                // Generate tokens
+                var accessToken = _tokenService.CreateToken(appUser);
+                var refreshToken = _tokenService.GenerateRefreshToken();
+
+                // Add refresh token to database
+                appUser.RefreshToken = refreshToken;
+                appUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(1);
+
+                var finalUpdateResult = await _userManager.UpdateAsync(appUser);
+
+                if (!finalUpdateResult.Succeeded)
+                {
+                    _logger.LogError("Failed to update user {Username} with refresh token. Errors: {Errors}", appUser.UserName, finalUpdateResult.Errors);
+                    return StatusCode(500, "Failed to update user with refresh token.");
+                }
+
+                return Ok(new LogResponseDto
+                {
+                    UserName = appUser.UserName,
+                    Email = appUser.Email,
+                    Token = accessToken,
+                    RefreshToken = refreshToken
+                });
             }
             catch (Exception e)
             {
@@ -163,6 +180,7 @@ namespace chatbackend.Controllers
                 return StatusCode(500, e);
             }
         }
+
     
         [HttpPost("logout")]
         [Authorize]
