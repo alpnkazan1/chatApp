@@ -132,18 +132,20 @@ namespace chatbackend.Data
                 .HasIndex(c => new { c.User1Id, c.User2Id });
 
 
-            List<IdentityRole> roles = new List<IdentityRole>
+            List<IdentityRole<Guid>> roles = new List<IdentityRole<Guid>>
             {
-                new IdentityRole{
+                new IdentityRole<Guid>{
+                    Id = Guid.NewGuid(),
                     Name = "ChatUser",
-                    NormalizedName = "USER"
+                    NormalizedName = "CHATUSER"
                 },
-                new IdentityRole{
+                new IdentityRole<Guid>{
+                    Id = Guid.NewGuid(),
                     Name = "Admin",
                     NormalizedName = "ADMIN"
                 }
             };
-            builder.Entity<IdentityRole>().HasData(roles);
+            builder.Entity<IdentityRole<Guid>>().HasData(roles);
             builder.Entity<User>(entity =>
                 {
                     entity.Property(e => e.AvatarId).IsRequired(false);

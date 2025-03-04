@@ -10,10 +10,10 @@ namespace chatbackend.Models
     public class User : IdentityUser<Guid>
     {
         [Key]
-        public override Guid Id { get; set; }
+        public override Guid Id { get; set; } = Guid.NewGuid();
         public Guid? AvatarId { get; set; }
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; } 
-        public string LastSeen { get; set; }
+        public string? LastSeen { get; set; }
     }
 }

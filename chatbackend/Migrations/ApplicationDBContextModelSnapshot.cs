@@ -22,39 +22,6 @@ namespace chatbackend.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IdentityRole");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "977c6280-18d0-4dd5-a3de-efcac564f490",
-                            Name = "ChatUser",
-                            NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = "293ee805-4d9b-4aeb-bc09-1a8441f23a94",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        });
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
                     b.Property<Guid>("Id")
@@ -80,6 +47,20 @@ namespace chatbackend.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("45d358ac-e096-429b-8cc5-100afbf211ff"),
+                            Name = "ChatUser",
+                            NormalizedName = "CHATUSER"
+                        },
+                        new
+                        {
+                            Id = new Guid("7311bda0-c94b-4919-ba81-f75fd0485121"),
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -332,7 +313,6 @@ namespace chatbackend.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("LastSeen")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")

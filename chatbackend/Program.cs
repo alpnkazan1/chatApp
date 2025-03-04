@@ -6,8 +6,6 @@ using chatbackend.Repository;
 using chatbackend.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -27,7 +25,6 @@ Log.Logger = new LoggerConfiguration()
         outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}] [{Level:u3}] {Message:lj}{NewLine}{Exception}"
     )
     .CreateLogger();
-
 builder.Services.AddSerilog();
 
 
@@ -46,7 +43,6 @@ builder.Services.AddDbContext<ApplicationDBContext>((serviceProvider, options) =
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 
     var logger = serviceProvider.GetRequiredService<ILogger<ApplicationDBContext>>();
-    options.EnableDetailedErrors();
     options.EnableSensitiveDataLogging(); // NEVER in production
 }, ServiceLifetime.Scoped);
 
@@ -99,7 +95,6 @@ builder.Services.AddAuthentication(options =>
 
 // 6. Register Application Services (Scoped, Singleton, etc.)
 builder.Services.AddScoped<IMessageService, MessageService>();
-builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -111,18 +106,26 @@ builder.Services.AddScoped(provider =>
     var logger = provider.GetRequiredService<ILogger<FileSystemAccess>>();
     return new FileSystemAccess(logger, builder.Configuration["FileStorage:BaseFilePath"]);
 });
-
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IAuthorizationService, MyAuthorizationService>();
 
-builder.Services.AddScoped<IUrlHelper>(provider =>
+builder.Services.AddScoped(provider =>
 {
-    var actionContext = provider.GetRequiredService<IActionContextAccessor>().ActionContext;
-    var factory = provider.GetRequiredService<IUrlHelperFactory>();
-    return factory.GetUrlHelper(actionContext);
-});
+    var logger = provider.GetRequiredService<ILogger<MyAuthorizationService>>();
+    var urlHelperFactory = provider.GetRequiredService<IUrlHelperFactory>();
+    var httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
+    var config = provider.GetRequiredService<IConfiguration>();
+    var context = provider.GetRequiredService<ApplicationDBContext>();
 
-builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+    return new MyAuthorizationService(
+        context,
+        logger,
+        urlHelperFactory,
+        httpContextAccessor,
+        config);
+});
+// Inotify limit fix
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
+
 
 // Build the Application
 var app = builder.Build();

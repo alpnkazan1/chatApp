@@ -1,186 +1,327 @@
-[2025-03-04 10:25:30.351 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
-[2025-03-04 10:26:24.796 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
-[2025-03-04 10:26:25.268 +03:00] [ERR] An error occurred using the connection to database 'chatApp' on server 'tcp://127.0.0.1:5432'.
-[2025-03-04 10:26:25.576 +03:00] [INF] Executed DbCommand (171ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE DATABASE "chatApp";
-[2025-03-04 10:26:25.802 +03:00] [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:14:29.196 +03:00] [INF] User profile is available. Using '/home/derail/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[2025-03-04 12:14:50.678 +03:00] [INF] User profile is available. Using '/home/derail/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[2025-03-04 12:14:50.887 +03:00] [INF] Now listening on: http://localhost:5148
+[2025-03-04 12:14:50.893 +03:00] [INF] Application started. Press Ctrl+C to shut down.
+[2025-03-04 12:14:50.893 +03:00] [INF] Hosting environment: Development
+[2025-03-04 12:14:50.894 +03:00] [INF] Content root path: /home/derail/Desktop/chatApp/chatbackend
+[2025-03-04 12:14:57.533 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.html - null null
+[2025-03-04 12:14:57.668 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.html - 200 null text/html;charset=utf-8 136.8142ms
+[2025-03-04 12:14:57.782 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.js - null null
+[2025-03-04 12:14:57.786 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.js - 200 null application/javascript;charset=utf-8 4.3097ms
+[2025-03-04 12:14:58.068 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/favicon-16x16.png - null null
+[2025-03-04 12:14:58.084 +03:00] [INF] Sending file. Request path: '/favicon-16x16.png'. Physical path: 'N/A'
+[2025-03-04 12:14:58.085 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/favicon-16x16.png - 200 665 image/png 16.9412ms
+[2025-03-04 12:14:58.133 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/openapi/v1.json - null null
+[2025-03-04 12:14:58.140 +03:00] [WRN] Failed to determine the https port for redirect.
+[2025-03-04 12:14:58.181 +03:00] [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 12:14:58.385 +03:00] [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 12:14:58.386 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/openapi/v1.json - 200 null application/json;charset=utf-8 253.4041ms
+[2025-03-04 12:15:03.970 +03:00] [INF] Request starting HTTP/1.1 POST http://localhost:5148/api/auth/register - application/x-www-form-urlencoded 52
+[2025-03-04 12:15:03.975 +03:00] [INF] Executing endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:15:04.039 +03:00] [INF] Route matched with {action = "Register", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(chatbackend.DTOs.Account.RegisterDto) on controller chatbackend.Controllers.AccountController (chatbackend).
+[2025-03-04 12:15:04.218 +03:00] [INF] Executed action chatbackend.Controllers.AccountController.Register (chatbackend) in 175.0366ms
+[2025-03-04 12:15:04.219 +03:00] [INF] Executed endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:15:04.220 +03:00] [ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: Unable to resolve service for type 'chatbackend.Service.MyAuthorizationService' while attempting to activate 'chatbackend.Controllers.AccountController'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.ThrowHelperUnableToResolveService(Type type, Type requiredBy)
+   at lambda_method8(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass6_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+[2025-03-04 12:15:04.240 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 500 null text/plain; charset=utf-8 269.1187ms
+[2025-03-04 12:15:13.130 +03:00] [INF] Application is shutting down...
+[2025-03-04 12:25:32.790 +03:00] [INF] User profile is available. Using '/home/derail/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[2025-03-04 12:25:33.021 +03:00] [INF] Now listening on: http://localhost:5148
+[2025-03-04 12:25:33.023 +03:00] [INF] Application started. Press Ctrl+C to shut down.
+[2025-03-04 12:25:33.024 +03:00] [INF] Hosting environment: Development
+[2025-03-04 12:25:33.024 +03:00] [INF] Content root path: /home/derail/Desktop/chatApp/chatbackend
+[2025-03-04 12:25:41.317 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.html - null null
+[2025-03-04 12:25:41.439 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.html - 200 null text/html;charset=utf-8 123.2282ms
+[2025-03-04 12:25:41.532 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.css - null null
+[2025-03-04 12:25:41.532 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/swagger-ui.css - null null
+[2025-03-04 12:25:41.534 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.js - null null
+[2025-03-04 12:25:41.538 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.js - 200 null application/javascript;charset=utf-8 3.862ms
+[2025-03-04 12:25:41.553 +03:00] [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+[2025-03-04 12:25:41.554 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/swagger-ui.css - 499 152035 text/css 21.7464ms
+[2025-03-04 12:25:41.554 +03:00] [INF] Sending file. Request path: '/index.css'. Physical path: 'N/A'
+[2025-03-04 12:25:41.555 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.css - 499 202 text/css 23.6515ms
+[2025-03-04 12:25:41.703 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/favicon-16x16.png - null null
+[2025-03-04 12:25:41.704 +03:00] [INF] Sending file. Request path: '/favicon-16x16.png'. Physical path: 'N/A'
+[2025-03-04 12:25:41.705 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/favicon-16x16.png - 499 665 image/png 1.2842ms
+[2025-03-04 12:25:41.750 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/openapi/v1.json - null null
+[2025-03-04 12:25:41.759 +03:00] [WRN] Failed to determine the https port for redirect.
+[2025-03-04 12:25:41.811 +03:00] [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 12:25:42.002 +03:00] [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 12:25:42.007 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/openapi/v1.json - 200 null application/json;charset=utf-8 257.8326ms
+[2025-03-04 12:25:46.113 +03:00] [INF] Request starting HTTP/1.1 POST http://localhost:5148/api/auth/register - application/x-www-form-urlencoded 52
+[2025-03-04 12:25:46.116 +03:00] [INF] Executing endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:25:46.154 +03:00] [INF] Route matched with {action = "Register", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(chatbackend.DTOs.Account.RegisterDto) on controller chatbackend.Controllers.AccountController (chatbackend).
+[2025-03-04 12:25:46.347 +03:00] [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+[2025-03-04 12:25:46.494 +03:00] [INF] Executed action chatbackend.Controllers.AccountController.Register (chatbackend) in 335.7945ms
+[2025-03-04 12:25:46.495 +03:00] [INF] Executed endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:25:46.497 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 400 262 application/problem+json; charset=utf-8 384.0014ms
+[2025-03-04 12:28:40.354 +03:00] [INF] Request starting HTTP/1.1 POST http://localhost:5148/api/auth/register - application/x-www-form-urlencoded 63
+[2025-03-04 12:28:40.365 +03:00] [INF] Executing endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:28:40.366 +03:00] [INF] Route matched with {action = "Register", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(chatbackend.DTOs.Account.RegisterDto) on controller chatbackend.Controllers.AccountController (chatbackend).
+[2025-03-04 12:28:40.394 +03:00] [ERR] Failed to create user string@mail.com. Errors: ["Microsoft.AspNetCore.Identity.IdentityError","Microsoft.AspNetCore.Identity.IdentityError","Microsoft.AspNetCore.Identity.IdentityError","Microsoft.AspNetCore.Identity.IdentityError"]
+[2025-03-04 12:28:40.396 +03:00] [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Microsoft.AspNetCore.Identity.IdentityError, Microsoft.Extensions.Identity.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]'.
+[2025-03-04 12:28:40.399 +03:00] [INF] Executed action chatbackend.Controllers.AccountController.Register (chatbackend) in 32.2345ms
+[2025-03-04 12:28:40.399 +03:00] [INF] Executed endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:28:40.399 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 500 409 application/json; charset=utf-8 44.6808ms
+[2025-03-04 12:29:17.249 +03:00] [INF] Request starting HTTP/1.1 POST http://localhost:5148/api/auth/register - application/x-www-form-urlencoded 92
+[2025-03-04 12:29:17.251 +03:00] [INF] Executing endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:29:17.252 +03:00] [INF] Route matched with {action = "Register", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(chatbackend.DTOs.Account.RegisterDto) on controller chatbackend.Controllers.AccountController (chatbackend).
+[2025-03-04 12:29:18.087 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+[2025-03-04 12:29:19.189 +03:00] [INF] Executed DbCommand (74ms) [Parameters=[@__normalizedUserName_0='RATIONALINVESTOR'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."AvatarId", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LastSeen", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+[2025-03-04 12:29:19.488 +03:00] [ERR] Failed executing DbCommand (37ms) [Parameters=[@p0='0195607c-fe8b-7945-b28d-c3c86538f72c', @p1='0', @p2=NULL (DbType = Guid), @p3='4351da87-20e0-45e6-98ea-598b6e3dd6ad', @p4='rationalInvestor@very.com', @p5='False', @p6=NULL (Nullable = false), @p7='True', @p8=NULL (DbType = DateTime), @p9='RATIONALINVESTOR@VERY.COM', @p10='RATIONALINVESTOR', @p11='AQAAAAIAAYagAAAAEN6n2/ulDOlpL+9XJ54AS5TfzuGOyYFYUUkZtnLqFHQ+lm74iV+prJ4I5u8Z6gA92g==', @p12=NULL, @p13='False', @p14=NULL, @p15='0001-01-01T00:00:00.0000000' (DbType = DateTime), @p16='P34CKLYTRPO2OCBHCQS742G6HKTZKZCJ', @p17='False', @p18='rationalInvestor'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetUsers" ("Id", "AccessFailedCount", "AvatarId", "ConcurrencyStamp", "Email", "EmailConfirmed", "LastSeen", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UserName")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18);
+[2025-03-04 12:29:19.532 +03:00] [ERR] An exception occurred in the database while saving changes for context type 'chatbackend.Data.ApplicationDBContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "LastSeen" of relation "AspNetUsers" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "LastSeen" of relation "AspNetUsers" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: AspNetUsers
+    ColumnName: LastSeen
+    File: execMain.c
+    Line: 1968
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "LastSeen" of relation "AspNetUsers" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "LastSeen" of relation "AspNetUsers" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: AspNetUsers
+    ColumnName: LastSeen
+    File: execMain.c
+    Line: 1968
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+[2025-03-04 12:29:19.536 +03:00] [ERR] Exception during registration.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "LastSeen" of relation "AspNetUsers" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "LastSeen" of relation "AspNetUsers" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: AspNetUsers
+    ColumnName: LastSeen
+    File: execMain.c
+    Line: 1968
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at chatbackend.Data.ApplicationDBContext.SaveChangesAsync(CancellationToken cancellationToken) in /home/derail/Desktop/chatApp/chatbackend/Data/ApplicationDBContext.cs:line 189
+   at Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore`9.CreateAsync(TUser user, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Identity.UserManager`1.CreateAsync(TUser user)
+   at Microsoft.AspNetCore.Identity.UserManager`1.CreateAsync(TUser user, String password)
+   at chatbackend.Controllers.AccountController.Register(RegisterDto registerDto) in /home/derail/Desktop/chatApp/chatbackend/Controllers/AccountController.cs:line 112
+[2025-03-04 12:29:19.545 +03:00] [INF] Executing ObjectResult, writing value of type 'Microsoft.EntityFrameworkCore.DbUpdateException'.
+[2025-03-04 12:29:19.554 +03:00] [INF] Executed action chatbackend.Controllers.AccountController.Register (chatbackend) in 2302.0978ms
+[2025-03-04 12:29:19.555 +03:00] [INF] Executed endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:29:19.564 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 500 5658 application/json; charset=utf-8 2315.2742ms
+[2025-03-04 12:30:42.995 +03:00] [INF] Application is shutting down...
+[2025-03-04 12:31:42.708 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+[2025-03-04 12:31:59.256 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+[2025-03-04 12:31:59.913 +03:00] [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+[2025-03-04 12:32:00.161 +03:00] [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
     "MigrationId" character varying(150) NOT NULL,
     "ProductVersion" character varying(32) NOT NULL,
     CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
 );
-[2025-03-04 10:26:25.811 +03:00] [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
-[2025-03-04 10:26:25.813 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:32:00.170 +03:00] [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+[2025-03-04 12:32:00.172 +03:00] [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
-[2025-03-04 10:26:25.817 +03:00] [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:32:00.173 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT "MigrationId", "ProductVersion"
 FROM "__EFMigrationsHistory"
 ORDER BY "MigrationId";
-[2025-03-04 10:26:25.831 +03:00] [INF] Applying migration '20250223190719_Initial'.
-[2025-03-04 10:26:25.918 +03:00] [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE TABLE "AspNetRoles" (
-    "Id" text NOT NULL,
-    "Name" character varying(256),
-    "NormalizedName" character varying(256),
-    "ConcurrencyStamp" text,
-    CONSTRAINT "PK_AspNetRoles" PRIMARY KEY ("Id")
-);
-[2025-03-04 10:26:25.930 +03:00] [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE TABLE "AspNetUsers" (
-    "Id" text NOT NULL,
-    "AvatarId" uuid NOT NULL,
-    "RefreshToken" text,
-    "RefreshTokenExpiryTime" timestamp with time zone NOT NULL,
-    "UserName" character varying(256),
-    "NormalizedUserName" character varying(256),
-    "Email" character varying(256),
-    "NormalizedEmail" character varying(256),
-    "EmailConfirmed" boolean NOT NULL,
-    "PasswordHash" text,
-    "SecurityStamp" text,
-    "ConcurrencyStamp" text,
-    "PhoneNumber" text,
-    "PhoneNumberConfirmed" boolean NOT NULL,
-    "TwoFactorEnabled" boolean NOT NULL,
-    "LockoutEnd" timestamp with time zone,
-    "LockoutEnabled" boolean NOT NULL,
-    "AccessFailedCount" integer NOT NULL,
-    CONSTRAINT "PK_AspNetUsers" PRIMARY KEY ("Id")
-);
-[2025-03-04 10:26:25.945 +03:00] [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE TABLE "AspNetRoleClaims" (
-    "Id" integer GENERATED BY DEFAULT AS IDENTITY,
-    "RoleId" text NOT NULL,
-    "ClaimType" text,
-    "ClaimValue" text,
-    CONSTRAINT "PK_AspNetRoleClaims" PRIMARY KEY ("Id"),
-    CONSTRAINT "FK_AspNetRoleClaims_AspNetRoles_RoleId" FOREIGN KEY ("RoleId") REFERENCES "AspNetRoles" ("Id") ON DELETE CASCADE
-);
-[2025-03-04 10:26:25.958 +03:00] [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE TABLE "AspNetUserClaims" (
-    "Id" integer GENERATED BY DEFAULT AS IDENTITY,
-    "UserId" text NOT NULL,
-    "ClaimType" text,
-    "ClaimValue" text,
-    CONSTRAINT "PK_AspNetUserClaims" PRIMARY KEY ("Id"),
-    CONSTRAINT "FK_AspNetUserClaims_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
-);
-[2025-03-04 10:26:25.972 +03:00] [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE TABLE "AspNetUserLogins" (
-    "LoginProvider" text NOT NULL,
-    "ProviderKey" text NOT NULL,
-    "ProviderDisplayName" text,
-    "UserId" text NOT NULL,
-    CONSTRAINT "PK_AspNetUserLogins" PRIMARY KEY ("LoginProvider", "ProviderKey"),
-    CONSTRAINT "FK_AspNetUserLogins_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
-);
-[2025-03-04 10:26:25.988 +03:00] [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE TABLE "AspNetUserRoles" (
-    "UserId" text NOT NULL,
-    "RoleId" text NOT NULL,
-    CONSTRAINT "PK_AspNetUserRoles" PRIMARY KEY ("UserId", "RoleId"),
-    CONSTRAINT "FK_AspNetUserRoles_AspNetRoles_RoleId" FOREIGN KEY ("RoleId") REFERENCES "AspNetRoles" ("Id") ON DELETE CASCADE,
-    CONSTRAINT "FK_AspNetUserRoles_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
-);
-[2025-03-04 10:26:26.002 +03:00] [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE TABLE "AspNetUserTokens" (
-    "UserId" text NOT NULL,
-    "LoginProvider" text NOT NULL,
-    "Name" text NOT NULL,
-    "Value" text,
-    CONSTRAINT "PK_AspNetUserTokens" PRIMARY KEY ("UserId", "LoginProvider", "Name"),
-    CONSTRAINT "FK_AspNetUserTokens_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
-);
-[2025-03-04 10:26:26.016 +03:00] [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE TABLE "Chats" (
-    "ChatId" uuid NOT NULL,
-    "User1Id" text NOT NULL,
-    "User2Id" text NOT NULL,
-    "UserName1" character varying(250) NOT NULL,
-    "UserName2" character varying(250) NOT NULL,
-    "BlockFlag" bigint NOT NULL DEFAULT 0,
-    "LastMessage" uuid NOT NULL,
-    "LastMessageTime" timestamp with time zone,
-    CONSTRAINT "PK_Chats" PRIMARY KEY ("ChatId"),
-    CONSTRAINT "FK_Chats_AspNetUsers_User1Id" FOREIGN KEY ("User1Id") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
-    CONSTRAINT "FK_Chats_AspNetUsers_User2Id" FOREIGN KEY ("User2Id") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT
-);
-[2025-03-04 10:26:26.030 +03:00] [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE TABLE "Messages" (
-    "MessageId" uuid NOT NULL,
-    "ChatId" uuid NOT NULL,
-    "SenderId" text NOT NULL,
-    "MessageText" text,
-    "PhotoId" uuid,
-    "SoundId" uuid,
-    "Timestamp" timestamp with time zone NOT NULL,
-    CONSTRAINT "PK_Messages" PRIMARY KEY ("MessageId"),
-    CONSTRAINT "FK_Messages_AspNetUsers_SenderId" FOREIGN KEY ("SenderId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE,
-    CONSTRAINT "FK_Messages_Chats_ChatId" FOREIGN KEY ("ChatId") REFERENCES "Chats" ("ChatId") ON DELETE CASCADE
-);
-[2025-03-04 10:26:26.040 +03:00] [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-INSERT INTO "AspNetRoles" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
-VALUES ('4068df82-df71-4f69-9d2b-c77a1e24640a', NULL, 'ChatUser', 'USER');
-INSERT INTO "AspNetRoles" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
-VALUES ('bc418e97-2952-4be4-845a-ebe40920d4f2', NULL, 'Admin', 'ADMIN');
-[2025-03-04 10:26:26.046 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE INDEX "IX_AspNetRoleClaims_RoleId" ON "AspNetRoleClaims" ("RoleId");
-[2025-03-04 10:26:26.053 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE UNIQUE INDEX "RoleNameIndex" ON "AspNetRoles" ("NormalizedName");
-[2025-03-04 10:26:26.058 +03:00] [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE INDEX "IX_AspNetUserClaims_UserId" ON "AspNetUserClaims" ("UserId");
-[2025-03-04 10:26:26.064 +03:00] [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE INDEX "IX_AspNetUserLogins_UserId" ON "AspNetUserLogins" ("UserId");
-[2025-03-04 10:26:26.069 +03:00] [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE INDEX "IX_AspNetUserRoles_RoleId" ON "AspNetUserRoles" ("RoleId");
-[2025-03-04 10:26:26.074 +03:00] [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE INDEX "EmailIndex" ON "AspNetUsers" ("NormalizedEmail");
-[2025-03-04 10:26:26.081 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE UNIQUE INDEX "UserNameIndex" ON "AspNetUsers" ("NormalizedUserName");
-[2025-03-04 10:26:26.087 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE UNIQUE INDEX "IX_Chats_User1Id_User2Id" ON "Chats" ("User1Id", "User2Id");
-[2025-03-04 10:26:26.093 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE INDEX "IX_Chats_User2Id" ON "Chats" ("User2Id");
-[2025-03-04 10:26:26.101 +03:00] [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE INDEX "IX_Messages_ChatId" ON "Messages" ("ChatId");
-[2025-03-04 10:26:26.107 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE INDEX "IX_Messages_SenderId" ON "Messages" ("SenderId");
-[2025-03-04 10:26:26.108 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:32:00.181 +03:00] [INF] Applying migration '20250304093143_Try1'.
+[2025-03-04 12:32:00.249 +03:00] [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM "IdentityRole"
+WHERE "Id" = '293ee805-4d9b-4aeb-bc09-1a8441f23a94';
+[2025-03-04 12:32:00.250 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM "IdentityRole"
+WHERE "Id" = '977c6280-18d0-4dd5-a3de-efcac564f490';
+[2025-03-04 12:32:00.252 +03:00] [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "AspNetUsers" ALTER COLUMN "LastSeen" DROP NOT NULL;
+[2025-03-04 12:32:00.260 +03:00] [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "IdentityRole" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
+VALUES ('8438eac6-e281-4a59-ba61-95187653f627', NULL, 'Admin', 'ADMIN');
+INSERT INTO "IdentityRole" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
+VALUES ('fc3464cf-90d7-4e9d-bfe0-5b8a2a2e2d01', NULL, 'ChatUser', 'USER');
+[2025-03-04 12:32:00.260 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20250223190719_Initial', '9.0.2');
-[2025-03-04 10:26:26.109 +03:00] [INF] Applying migration '20250304072532_TestableDB'.
-[2025-03-04 10:26:26.176 +03:00] [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-DELETE FROM "AspNetRoles"
-WHERE "Id" = '4068df82-df71-4f69-9d2b-c77a1e24640a';
-[2025-03-04 10:26:26.177 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-DELETE FROM "AspNetRoles"
-WHERE "Id" = 'bc418e97-2952-4be4-845a-ebe40920d4f2';
-[2025-03-04 10:26:26.178 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-ALTER TABLE "Messages" DROP COLUMN "PhotoId";
-[2025-03-04 10:26:26.179 +03:00] [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-ALTER TABLE "Messages" RENAME COLUMN "SoundId" TO "FileId";
-[2025-03-04 10:26:26.189 +03:00] [ERR] Failed executing DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-ALTER TABLE "Messages" ALTER COLUMN "SenderId" TYPE uuid;
-[2025-03-04 10:30:07.707 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
-[2025-03-04 10:30:19.129 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
-[2025-03-04 10:30:19.674 +03:00] [ERR] An error occurred using the connection to database 'chatApp' on server 'tcp://127.0.0.1:5432'.
-[2025-03-04 10:30:19.951 +03:00] [INF] Executed DbCommand (133ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+VALUES ('20250304093143_Try1', '9.0.2');
+[2025-03-04 12:32:08.930 +03:00] [INF] User profile is available. Using '/home/derail/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[2025-03-04 12:32:09.124 +03:00] [INF] Now listening on: http://localhost:5148
+[2025-03-04 12:32:09.127 +03:00] [INF] Application started. Press Ctrl+C to shut down.
+[2025-03-04 12:32:09.127 +03:00] [INF] Hosting environment: Development
+[2025-03-04 12:32:09.127 +03:00] [INF] Content root path: /home/derail/Desktop/chatApp/chatbackend
+[2025-03-04 12:32:33.135 +03:00] [INF] Application is shutting down...
+[2025-03-04 12:32:38.178 +03:00] [INF] User profile is available. Using '/home/derail/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[2025-03-04 12:32:38.316 +03:00] [INF] Now listening on: http://localhost:5148
+[2025-03-04 12:32:38.318 +03:00] [INF] Application started. Press Ctrl+C to shut down.
+[2025-03-04 12:32:38.319 +03:00] [INF] Hosting environment: Development
+[2025-03-04 12:32:38.319 +03:00] [INF] Content root path: /home/derail/Desktop/chatApp/chatbackend
+[2025-03-04 12:32:41.683 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.html - null null
+[2025-03-04 12:32:41.805 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.html - 200 null text/html;charset=utf-8 124.8966ms
+[2025-03-04 12:32:41.891 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.js - null null
+[2025-03-04 12:32:41.894 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.js - 200 null application/javascript;charset=utf-8 3.2617ms
+[2025-03-04 12:32:42.030 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/favicon-16x16.png - null null
+[2025-03-04 12:32:42.052 +03:00] [INF] Sending file. Request path: '/favicon-16x16.png'. Physical path: 'N/A'
+[2025-03-04 12:32:42.052 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/favicon-16x16.png - 499 665 image/png 22.1225ms
+[2025-03-04 12:32:42.106 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/openapi/v1.json - null null
+[2025-03-04 12:32:42.112 +03:00] [WRN] Failed to determine the https port for redirect.
+[2025-03-04 12:32:42.169 +03:00] [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 12:32:42.373 +03:00] [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 12:32:42.374 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/openapi/v1.json - 200 null application/json;charset=utf-8 268.1361ms
+[2025-03-04 12:33:10.028 +03:00] [INF] Request starting HTTP/1.1 POST http://localhost:5148/api/auth/register - application/x-www-form-urlencoded 92
+[2025-03-04 12:33:10.033 +03:00] [INF] Executing endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:33:10.077 +03:00] [INF] Route matched with {action = "Register", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(chatbackend.DTOs.Account.RegisterDto) on controller chatbackend.Controllers.AccountController (chatbackend).
+[2025-03-04 12:33:11.120 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+[2025-03-04 12:33:12.204 +03:00] [INF] Executed DbCommand (73ms) [Parameters=[@__normalizedUserName_0='RATIONALINVESTOR'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."AvatarId", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LastSeen", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+[2025-03-04 12:33:12.509 +03:00] [INF] Executed DbCommand (29ms) [Parameters=[@p0='01956080-8cc4-71bc-9b51-fc7315d998a3', @p1='0', @p2=NULL (DbType = Guid), @p3='fb8814eb-7edf-42bf-967d-75b2ae55f624', @p4='rationalInvestor@very.com', @p5='False', @p6=NULL, @p7='True', @p8=NULL (DbType = DateTime), @p9='RATIONALINVESTOR@VERY.COM', @p10='RATIONALINVESTOR', @p11='AQAAAAIAAYagAAAAEK4F004PwtFzjkxhtb1SWLZ+h7svkFYzj9cKPpr3rdyoTpNivOlXkGcgVN1c4KUY6g==', @p12=NULL, @p13='False', @p14=NULL, @p15='0001-01-01T00:00:00.0000000' (DbType = DateTime), @p16='ELO6JEE27CIFMZIUYNWQPLFAMX37LHPG', @p17='False', @p18='rationalInvestor'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetUsers" ("Id", "AccessFailedCount", "AvatarId", "ConcurrencyStamp", "Email", "EmailConfirmed", "LastSeen", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UserName")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18);
+[2025-03-04 12:33:12.524 +03:00] [INF] User rationalInvestor created successfully.
+[2025-03-04 12:33:12.540 +03:00] [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedRoleName_0='CHATUSER'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2
+[2025-03-04 12:33:12.557 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='CHATUSER'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2
+[2025-03-04 12:33:12.560 +03:00] [ERR] Exception during registration.
+System.InvalidOperationException: Role CHATUSER does not exist.
+   at Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore`9.AddToRoleAsync(TUser user, String normalizedRoleName, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Identity.UserManager`1.AddToRoleAsync(TUser user, String role)
+   at chatbackend.Controllers.AccountController.Register(RegisterDto registerDto) in /home/derail/Desktop/chatApp/chatbackend/Controllers/AccountController.cs:line 122
+[2025-03-04 12:33:12.585 +03:00] [INF] Executing ObjectResult, writing value of type 'System.InvalidOperationException'.
+[2025-03-04 12:33:12.665 +03:00] [INF] Executed action chatbackend.Controllers.AccountController.Register (chatbackend) in 2583.9733ms
+[2025-03-04 12:33:12.666 +03:00] [INF] Executed endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:33:12.676 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 500 757 application/json; charset=utf-8 2648.5784ms
+[2025-03-04 12:34:53.577 +03:00] [INF] Application is shutting down...
+[2025-03-04 12:35:04.351 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+[2025-03-04 12:36:45.625 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+[2025-03-04 12:38:07.142 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+[2025-03-04 12:39:23.334 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+[2025-03-04 12:39:35.216 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+[2025-03-04 12:39:35.733 +03:00] [ERR] An error occurred using the connection to database 'chatApp' on server 'tcp://127.0.0.1:5432'.
+[2025-03-04 12:39:36.085 +03:00] [INF] Executed DbCommand (208ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE DATABASE "chatApp";
-[2025-03-04 10:30:20.176 +03:00] [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.293 +03:00] [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
     "MigrationId" character varying(150) NOT NULL,
     "ProductVersion" character varying(32) NOT NULL,
     CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
 );
-[2025-03-04 10:30:20.186 +03:00] [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
-[2025-03-04 10:30:20.188 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.301 +03:00] [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+[2025-03-04 12:39:36.304 +03:00] [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
-[2025-03-04 10:30:20.192 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.307 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 SELECT "MigrationId", "ProductVersion"
 FROM "__EFMigrationsHistory"
 ORDER BY "MigrationId";
-[2025-03-04 10:30:20.205 +03:00] [INF] Applying migration '20250304073008_InitialCreate'.
-[2025-03-04 10:30:20.321 +03:00] [INF] Executed DbCommand (37ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.319 +03:00] [INF] Applying migration '20250304093924_Try2'.
+[2025-03-04 12:39:36.415 +03:00] [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE TABLE "AspNetRoles" (
     "Id" uuid NOT NULL,
     "Name" character varying(256),
@@ -188,13 +329,13 @@ CREATE TABLE "AspNetRoles" (
     "ConcurrencyStamp" text,
     CONSTRAINT "PK_AspNetRoles" PRIMARY KEY ("Id")
 );
-[2025-03-04 10:30:20.333 +03:00] [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.421 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE TABLE "AspNetUsers" (
     "Id" uuid NOT NULL,
     "AvatarId" uuid,
     "RefreshToken" text,
     "RefreshTokenExpiryTime" timestamp with time zone NOT NULL,
-    "LastSeen" text NOT NULL,
+    "LastSeen" text,
     "UserName" character varying(256),
     "NormalizedUserName" character varying(256),
     "Email" character varying(256),
@@ -211,15 +352,7 @@ CREATE TABLE "AspNetUsers" (
     "AccessFailedCount" integer NOT NULL,
     CONSTRAINT "PK_AspNetUsers" PRIMARY KEY ("Id")
 );
-[2025-03-04 10:30:20.345 +03:00] [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-CREATE TABLE "IdentityRole" (
-    "Id" text NOT NULL,
-    "Name" text,
-    "NormalizedName" text,
-    "ConcurrencyStamp" text,
-    CONSTRAINT "PK_IdentityRole" PRIMARY KEY ("Id")
-);
-[2025-03-04 10:30:20.357 +03:00] [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.430 +03:00] [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE TABLE "AspNetRoleClaims" (
     "Id" integer GENERATED BY DEFAULT AS IDENTITY,
     "RoleId" uuid NOT NULL,
@@ -228,7 +361,7 @@ CREATE TABLE "AspNetRoleClaims" (
     CONSTRAINT "PK_AspNetRoleClaims" PRIMARY KEY ("Id"),
     CONSTRAINT "FK_AspNetRoleClaims_AspNetRoles_RoleId" FOREIGN KEY ("RoleId") REFERENCES "AspNetRoles" ("Id") ON DELETE CASCADE
 );
-[2025-03-04 10:30:20.368 +03:00] [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.437 +03:00] [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE TABLE "AspNetUserClaims" (
     "Id" integer GENERATED BY DEFAULT AS IDENTITY,
     "UserId" uuid NOT NULL,
@@ -237,7 +370,7 @@ CREATE TABLE "AspNetUserClaims" (
     CONSTRAINT "PK_AspNetUserClaims" PRIMARY KEY ("Id"),
     CONSTRAINT "FK_AspNetUserClaims_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
 );
-[2025-03-04 10:30:20.380 +03:00] [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.443 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE TABLE "AspNetUserLogins" (
     "LoginProvider" text NOT NULL,
     "ProviderKey" text NOT NULL,
@@ -246,7 +379,7 @@ CREATE TABLE "AspNetUserLogins" (
     CONSTRAINT "PK_AspNetUserLogins" PRIMARY KEY ("LoginProvider", "ProviderKey"),
     CONSTRAINT "FK_AspNetUserLogins_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
 );
-[2025-03-04 10:30:20.387 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.448 +03:00] [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE TABLE "AspNetUserRoles" (
     "UserId" uuid NOT NULL,
     "RoleId" uuid NOT NULL,
@@ -254,7 +387,7 @@ CREATE TABLE "AspNetUserRoles" (
     CONSTRAINT "FK_AspNetUserRoles_AspNetRoles_RoleId" FOREIGN KEY ("RoleId") REFERENCES "AspNetRoles" ("Id") ON DELETE CASCADE,
     CONSTRAINT "FK_AspNetUserRoles_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
 );
-[2025-03-04 10:30:20.400 +03:00] [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.455 +03:00] [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE TABLE "AspNetUserTokens" (
     "UserId" uuid NOT NULL,
     "LoginProvider" text NOT NULL,
@@ -263,7 +396,7 @@ CREATE TABLE "AspNetUserTokens" (
     CONSTRAINT "PK_AspNetUserTokens" PRIMARY KEY ("UserId", "LoginProvider", "Name"),
     CONSTRAINT "FK_AspNetUserTokens_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
 );
-[2025-03-04 10:30:20.412 +03:00] [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.463 +03:00] [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE TABLE "Chats" (
     "ChatId" uuid NOT NULL,
     "User1Id" uuid NOT NULL,
@@ -277,7 +410,7 @@ CREATE TABLE "Chats" (
     CONSTRAINT "FK_Chats_AspNetUsers_User1Id" FOREIGN KEY ("User1Id") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT,
     CONSTRAINT "FK_Chats_AspNetUsers_User2Id" FOREIGN KEY ("User2Id") REFERENCES "AspNetUsers" ("Id") ON DELETE RESTRICT
 );
-[2025-03-04 10:30:20.424 +03:00] [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.471 +03:00] [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE TABLE "Messages" (
     "MessageId" uuid NOT NULL,
     "ChatId" uuid NOT NULL,
@@ -293,7 +426,7 @@ CREATE TABLE "Messages" (
     CONSTRAINT "FK_Messages_AspNetUsers_SenderId" FOREIGN KEY ("SenderId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE,
     CONSTRAINT "FK_Messages_Chats_ChatId" FOREIGN KEY ("ChatId") REFERENCES "Chats" ("ChatId") ON DELETE CASCADE
 );
-[2025-03-04 10:30:20.461 +03:00] [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.479 +03:00] [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE TABLE "ACL" (
     "Id" integer GENERATED BY DEFAULT AS IDENTITY,
     "UserId" uuid NOT NULL,
@@ -305,43 +438,231 @@ CREATE TABLE "ACL" (
     CONSTRAINT "FK_ACL_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE,
     CONSTRAINT "FK_ACL_Messages_MessageId" FOREIGN KEY ("MessageId") REFERENCES "Messages" ("MessageId") ON DELETE CASCADE
 );
-[2025-03-04 10:30:20.469 +03:00] [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
-INSERT INTO "IdentityRole" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
-VALUES ('293ee805-4d9b-4aeb-bc09-1a8441f23a94', NULL, 'Admin', 'ADMIN');
-INSERT INTO "IdentityRole" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
-VALUES ('977c6280-18d0-4dd5-a3de-efcac564f490', NULL, 'ChatUser', 'USER');
-[2025-03-04 10:30:20.475 +03:00] [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.490 +03:00] [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetRoles" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
+VALUES ('56f02888-327a-4dfc-926c-c6e315eacd6a', NULL, 'ChatUser', 'USER');
+INSERT INTO "AspNetRoles" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
+VALUES ('a6be3d75-bbd7-4cdf-bf90-41ff8ef600b2', NULL, 'Admin', 'ADMIN');
+[2025-03-04 12:39:36.493 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE INDEX "IX_ACL_FileId" ON "ACL" ("FileId");
-[2025-03-04 10:30:20.480 +03:00] [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.496 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE UNIQUE INDEX "IX_ACL_FileId_UserId" ON "ACL" ("FileId", "UserId");
-[2025-03-04 10:30:20.486 +03:00] [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.499 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE INDEX "IX_ACL_MessageId" ON "ACL" ("MessageId");
-[2025-03-04 10:30:20.491 +03:00] [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.502 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE INDEX "IX_ACL_UserId" ON "ACL" ("UserId");
-[2025-03-04 10:30:20.497 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.505 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE INDEX "IX_AspNetRoleClaims_RoleId" ON "AspNetRoleClaims" ("RoleId");
-[2025-03-04 10:30:20.503 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.508 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE UNIQUE INDEX "RoleNameIndex" ON "AspNetRoles" ("NormalizedName");
-[2025-03-04 10:30:20.509 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.511 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE INDEX "IX_AspNetUserClaims_UserId" ON "AspNetUserClaims" ("UserId");
-[2025-03-04 10:30:20.514 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.514 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE INDEX "IX_AspNetUserLogins_UserId" ON "AspNetUserLogins" ("UserId");
-[2025-03-04 10:30:20.520 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.517 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE INDEX "IX_AspNetUserRoles_RoleId" ON "AspNetUserRoles" ("RoleId");
-[2025-03-04 10:30:20.526 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.520 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE INDEX "EmailIndex" ON "AspNetUsers" ("NormalizedEmail");
-[2025-03-04 10:30:20.532 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.523 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE UNIQUE INDEX "UserNameIndex" ON "AspNetUsers" ("NormalizedUserName");
-[2025-03-04 10:30:20.538 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.526 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE UNIQUE INDEX "IX_Chats_User1Id_User2Id" ON "Chats" ("User1Id", "User2Id");
-[2025-03-04 10:30:20.544 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.529 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE INDEX "IX_Chats_User2Id" ON "Chats" ("User2Id");
-[2025-03-04 10:30:20.550 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.532 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE INDEX "IX_Messages_ChatId" ON "Messages" ("ChatId");
-[2025-03-04 10:30:20.556 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.535 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE INDEX "IX_Messages_ReceiverId" ON "Messages" ("ReceiverId");
-[2025-03-04 10:30:20.562 +03:00] [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.538 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 CREATE INDEX "IX_Messages_SenderId" ON "Messages" ("SenderId");
-[2025-03-04 10:30:20.563 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+[2025-03-04 12:39:36.540 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20250304073008_InitialCreate', '9.0.2');
+VALUES ('20250304093924_Try2', '9.0.2');
+[2025-03-04 12:39:44.550 +03:00] [INF] User profile is available. Using '/home/derail/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[2025-03-04 12:39:44.743 +03:00] [INF] Now listening on: http://localhost:5148
+[2025-03-04 12:39:44.746 +03:00] [INF] Application started. Press Ctrl+C to shut down.
+[2025-03-04 12:39:44.746 +03:00] [INF] Hosting environment: Development
+[2025-03-04 12:39:44.747 +03:00] [INF] Content root path: /home/derail/Desktop/chatApp/chatbackend
+[2025-03-04 12:39:59.411 +03:00] [INF] Request starting HTTP/1.1 POST http://localhost:5148/api/auth/register - application/x-www-form-urlencoded 92
+[2025-03-04 12:39:59.444 +03:00] [WRN] Failed to determine the https port for redirect.
+[2025-03-04 12:39:59.477 +03:00] [INF] Executing endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:39:59.515 +03:00] [INF] Route matched with {action = "Register", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(chatbackend.DTOs.Account.RegisterDto) on controller chatbackend.Controllers.AccountController (chatbackend).
+[2025-03-04 12:40:00.562 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+[2025-03-04 12:40:01.631 +03:00] [INF] Executed DbCommand (70ms) [Parameters=[@__normalizedUserName_0='RATIONALINVESTOR'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."AvatarId", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LastSeen", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+[2025-03-04 12:40:01.905 +03:00] [INF] Executed DbCommand (19ms) [Parameters=[@p0='96ec6bd4-782a-4fe2-bfa9-3c3c4a03abe6', @p1='0', @p2=NULL (DbType = Guid), @p3='d08e65af-1fbb-47fc-82ef-fca88959829f', @p4='rationalInvestor@very.com', @p5='False', @p6=NULL, @p7='True', @p8=NULL (DbType = DateTime), @p9='RATIONALINVESTOR@VERY.COM', @p10='RATIONALINVESTOR', @p11='AQAAAAIAAYagAAAAEJRPCLYqiBQB91kw5mQy+fTI+JZbhT0J4hgGdDEdVreSn1DD4McTkte5Sky8+43Snw==', @p12=NULL, @p13='False', @p14=NULL, @p15='0001-01-01T00:00:00.0000000' (DbType = DateTime), @p16='UPJW7QYPJVPIU2UKIHXKJ7QYCJA6XHLT', @p17='False', @p18='rationalInvestor'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetUsers" ("Id", "AccessFailedCount", "AvatarId", "ConcurrencyStamp", "Email", "EmailConfirmed", "LastSeen", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UserName")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18);
+[2025-03-04 12:40:01.940 +03:00] [INF] User rationalInvestor created successfully.
+[2025-03-04 12:40:01.964 +03:00] [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedRoleName_0='CHATUSER'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2
+[2025-03-04 12:40:01.973 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='CHATUSER'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2
+[2025-03-04 12:40:01.975 +03:00] [ERR] Exception during registration.
+System.InvalidOperationException: Role CHATUSER does not exist.
+   at Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore`9.AddToRoleAsync(TUser user, String normalizedRoleName, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Identity.UserManager`1.AddToRoleAsync(TUser user, String role)
+   at chatbackend.Controllers.AccountController.Register(RegisterDto registerDto) in /home/derail/Desktop/chatApp/chatbackend/Controllers/AccountController.cs:line 122
+[2025-03-04 12:40:01.999 +03:00] [INF] Executing ObjectResult, writing value of type 'System.InvalidOperationException'.
+[2025-03-04 12:40:02.077 +03:00] [INF] Executed action chatbackend.Controllers.AccountController.Register (chatbackend) in 2557.1265ms
+[2025-03-04 12:40:02.081 +03:00] [INF] Executed endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:40:02.093 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 500 757 application/json; charset=utf-8 2684.9522ms
+[2025-03-04 12:42:26.065 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.html - null null
+[2025-03-04 12:42:26.153 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.html - 200 null text/html;charset=utf-8 87.9561ms
+[2025-03-04 12:42:26.284 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.js - null null
+[2025-03-04 12:42:26.287 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.js - 200 null application/javascript;charset=utf-8 3.155ms
+[2025-03-04 12:42:26.503 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/favicon-16x16.png - null null
+[2025-03-04 12:42:26.514 +03:00] [INF] Sending file. Request path: '/favicon-16x16.png'. Physical path: 'N/A'
+[2025-03-04 12:42:26.514 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/favicon-16x16.png - 499 665 image/png 11.008ms
+[2025-03-04 12:42:26.520 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/openapi/v1.json - null null
+[2025-03-04 12:42:26.523 +03:00] [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 12:42:26.701 +03:00] [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 12:42:26.701 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/openapi/v1.json - 200 null application/json;charset=utf-8 180.9789ms
+[2025-03-04 12:43:25.199 +03:00] [INF] Application is shutting down...
+[2025-03-04 12:43:36.512 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+[2025-03-04 12:43:48.153 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+[2025-03-04 12:43:48.767 +03:00] [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+[2025-03-04 12:43:49.011 +03:00] [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+[2025-03-04 12:43:49.020 +03:00] [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+[2025-03-04 12:43:49.023 +03:00] [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+[2025-03-04 12:43:49.024 +03:00] [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+[2025-03-04 12:43:49.031 +03:00] [INF] Applying migration '20250304094337_Try3'.
+[2025-03-04 12:43:49.089 +03:00] [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM "AspNetRoles"
+WHERE "Id" = '56f02888-327a-4dfc-926c-c6e315eacd6a';
+[2025-03-04 12:43:49.090 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM "AspNetRoles"
+WHERE "Id" = 'a6be3d75-bbd7-4cdf-bf90-41ff8ef600b2';
+[2025-03-04 12:43:49.096 +03:00] [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetRoles" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
+VALUES ('45d358ac-e096-429b-8cc5-100afbf211ff', NULL, 'ChatUser', 'CHATUSER');
+INSERT INTO "AspNetRoles" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
+VALUES ('7311bda0-c94b-4919-ba81-f75fd0485121', NULL, 'Admin', 'ADMIN');
+[2025-03-04 12:43:49.096 +03:00] [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20250304094337_Try3', '9.0.2');
+[2025-03-04 12:43:55.657 +03:00] [INF] User profile is available. Using '/home/derail/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[2025-03-04 12:43:55.877 +03:00] [INF] Now listening on: http://localhost:5148
+[2025-03-04 12:43:55.880 +03:00] [INF] Application started. Press Ctrl+C to shut down.
+[2025-03-04 12:43:55.880 +03:00] [INF] Hosting environment: Development
+[2025-03-04 12:43:55.880 +03:00] [INF] Content root path: /home/derail/Desktop/chatApp/chatbackend
+[2025-03-04 12:43:59.653 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.html - null null
+[2025-03-04 12:43:59.784 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.html - 200 null text/html;charset=utf-8 132.1973ms
+[2025-03-04 12:43:59.848 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.js - null null
+[2025-03-04 12:43:59.851 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.js - 200 null application/javascript;charset=utf-8 3.8949ms
+[2025-03-04 12:44:00.041 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/openapi/v1.json - null null
+[2025-03-04 12:44:00.050 +03:00] [WRN] Failed to determine the https port for redirect.
+[2025-03-04 12:44:00.101 +03:00] [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 12:44:00.284 +03:00] [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 12:44:00.285 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/openapi/v1.json - 200 null application/json;charset=utf-8 243.8296ms
+[2025-03-04 12:44:29.137 +03:00] [INF] Request starting HTTP/1.1 POST http://localhost:5148/api/auth/register - application/x-www-form-urlencoded 92
+[2025-03-04 12:44:29.145 +03:00] [INF] Executing endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:44:29.189 +03:00] [INF] Route matched with {action = "Register", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(chatbackend.DTOs.Account.RegisterDto) on controller chatbackend.Controllers.AccountController (chatbackend).
+[2025-03-04 12:44:30.252 +03:00] [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+[2025-03-04 12:44:31.399 +03:00] [INF] Executed DbCommand (84ms) [Parameters=[@__normalizedUserName_0='RATIONALINVESTOR'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."AvatarId", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LastSeen", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+[2025-03-04 12:44:31.583 +03:00] [ERR] Failed to create user rationalInvestor@very.com. Errors: ["Microsoft.AspNetCore.Identity.IdentityError"]
+[2025-03-04 12:44:31.592 +03:00] [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[Microsoft.AspNetCore.Identity.IdentityError, Microsoft.Extensions.Identity.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]'.
+[2025-03-04 12:44:31.701 +03:00] [INF] Executed action chatbackend.Controllers.AccountController.Register (chatbackend) in 2506.6932ms
+[2025-03-04 12:44:31.702 +03:00] [INF] Executed endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:44:31.714 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 500 92 application/json; charset=utf-8 2577.1509ms
+[2025-03-04 12:45:45.797 +03:00] [INF] Request starting HTTP/1.1 POST http://localhost:5148/api/auth/register - application/x-www-form-urlencoded 92
+[2025-03-04 12:45:45.808 +03:00] [INF] Executing endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:45:45.808 +03:00] [INF] Route matched with {action = "Register", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(chatbackend.DTOs.Account.RegisterDto) on controller chatbackend.Controllers.AccountController (chatbackend).
+[2025-03-04 12:45:45.998 +03:00] [INF] Executed DbCommand (7ms) [Parameters=[@__normalizedUserName_0='RATIONALINVESTOR'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."AvatarId", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LastSeen", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+[2025-03-04 12:45:46.199 +03:00] [INF] Executed DbCommand (21ms) [Parameters=[@p0='53aba471-eb24-4fcd-bbbe-3d13d13dc0a5', @p1='0', @p2=NULL (DbType = Guid), @p3='ec4cf97c-c912-47f9-a1ab-c62f36d6c7fc', @p4='rationalInvestor@very.com', @p5='False', @p6=NULL, @p7='True', @p8=NULL (DbType = DateTime), @p9='RATIONALINVESTOR@VERY.COM', @p10='RATIONALINVESTOR', @p11='AQAAAAIAAYagAAAAENDJe07Fxq5c5tTxZyz+4f2plDMcgS20Pqiv6dd+dRhaz7D4H285oxxIDIOL+3pYtg==', @p12=NULL, @p13='False', @p14=NULL, @p15='0001-01-01T00:00:00.0000000' (DbType = DateTime), @p16='3LSDLASCCO4SDZ5N5LSB4P3PQU6INPTP', @p17='False', @p18='rationalInvestor'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetUsers" ("Id", "AccessFailedCount", "AvatarId", "ConcurrencyStamp", "Email", "EmailConfirmed", "LastSeen", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UserName")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18);
+[2025-03-04 12:45:46.214 +03:00] [INF] User rationalInvestor created successfully.
+[2025-03-04 12:45:46.231 +03:00] [INF] Executed DbCommand (2ms) [Parameters=[@__normalizedRoleName_0='CHATUSER'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2
+[2025-03-04 12:45:46.347 +03:00] [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='53aba471-eb24-4fcd-bbbe-3d13d13dc0a5' (Nullable = true), @__p_1='45d358ac-e096-429b-8cc5-100afbf211ff' (Nullable = true)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."UserId", a."RoleId"
+FROM "AspNetUserRoles" AS a
+WHERE a."UserId" = @__p_0 AND a."RoleId" = @__p_1
+LIMIT 1
+[2025-03-04 12:45:46.352 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedRoleName_0='CHATUSER'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2
+[2025-03-04 12:45:46.373 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='RATIONALINVESTOR'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."AvatarId", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LastSeen", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+[2025-03-04 12:45:46.442 +03:00] [INF] Executed DbCommand (7ms) [Parameters=[@p0='45d358ac-e096-429b-8cc5-100afbf211ff', @p1='53aba471-eb24-4fcd-bbbe-3d13d13dc0a5', @p20='53aba471-eb24-4fcd-bbbe-3d13d13dc0a5', @p2='0', @p3=NULL (DbType = Guid), @p4='3bbfce44-1e9d-4c8f-ae7a-48ed31f3492e', @p21='ec4cf97c-c912-47f9-a1ab-c62f36d6c7fc', @p5='rationalInvestor@very.com', @p6='False', @p7=NULL, @p8='True', @p9=NULL (DbType = DateTime), @p10='RATIONALINVESTOR@VERY.COM', @p11='RATIONALINVESTOR', @p12='AQAAAAIAAYagAAAAENDJe07Fxq5c5tTxZyz+4f2plDMcgS20Pqiv6dd+dRhaz7D4H285oxxIDIOL+3pYtg==', @p13=NULL, @p14='False', @p15=NULL, @p16='0001-01-01T00:00:00.0000000' (DbType = DateTime), @p17='3LSDLASCCO4SDZ5N5LSB4P3PQU6INPTP', @p18='False', @p19='rationalInvestor'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetUserRoles" ("RoleId", "UserId")
+VALUES (@p0, @p1);
+UPDATE "AspNetUsers" SET "AccessFailedCount" = @p2, "AvatarId" = @p3, "ConcurrencyStamp" = @p4, "Email" = @p5, "EmailConfirmed" = @p6, "LastSeen" = @p7, "LockoutEnabled" = @p8, "LockoutEnd" = @p9, "NormalizedEmail" = @p10, "NormalizedUserName" = @p11, "PasswordHash" = @p12, "PhoneNumber" = @p13, "PhoneNumberConfirmed" = @p14, "RefreshToken" = @p15, "RefreshTokenExpiryTime" = @p16, "SecurityStamp" = @p17, "TwoFactorEnabled" = @p18, "UserName" = @p19
+WHERE "Id" = @p20 AND "ConcurrencyStamp" = @p21;
+[2025-03-04 12:45:46.458 +03:00] [INF] User rationalInvestor added to ChatUser role.
+[2025-03-04 12:45:46.492 +03:00] [INF] Executed DbCommand (1ms) [Parameters=[@__normalizedUserName_0='RATIONALINVESTOR'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."AccessFailedCount", a."AvatarId", a."ConcurrencyStamp", a."Email", a."EmailConfirmed", a."LastSeen", a."LockoutEnabled", a."LockoutEnd", a."NormalizedEmail", a."NormalizedUserName", a."PasswordHash", a."PhoneNumber", a."PhoneNumberConfirmed", a."RefreshToken", a."RefreshTokenExpiryTime", a."SecurityStamp", a."TwoFactorEnabled", a."UserName"
+FROM "AspNetUsers" AS a
+WHERE a."NormalizedUserName" = @__normalizedUserName_0
+LIMIT 1
+[2025-03-04 12:45:46.496 +03:00] [INF] Executed DbCommand (2ms) [Parameters=[@p18='53aba471-eb24-4fcd-bbbe-3d13d13dc0a5', @p0='0', @p1=NULL (DbType = Guid), @p2='231f1a70-3e60-4889-8372-370eb708acbd', @p19='3bbfce44-1e9d-4c8f-ae7a-48ed31f3492e', @p3='rationalInvestor@very.com', @p4='False', @p5=NULL, @p6='True', @p7=NULL (DbType = DateTime), @p8='RATIONALINVESTOR@VERY.COM', @p9='RATIONALINVESTOR', @p10='AQAAAAIAAYagAAAAENDJe07Fxq5c5tTxZyz+4f2plDMcgS20Pqiv6dd+dRhaz7D4H285oxxIDIOL+3pYtg==', @p11=NULL, @p12='False', @p13='spy9+/5IDzxHpIJqgkdKz5+aIeqxoPCF5j0Y8A4zyAY+RPcxPsxssR1GGRZxp+UphJI1MxjSjvo715UE2Ih45w==', @p14='2025-03-05T09:45:46.4909704Z' (DbType = DateTime), @p15='3LSDLASCCO4SDZ5N5LSB4P3PQU6INPTP', @p16='False', @p17='rationalInvestor'], CommandType='"Text"', CommandTimeout='30']
+UPDATE "AspNetUsers" SET "AccessFailedCount" = @p0, "AvatarId" = @p1, "ConcurrencyStamp" = @p2, "Email" = @p3, "EmailConfirmed" = @p4, "LastSeen" = @p5, "LockoutEnabled" = @p6, "LockoutEnd" = @p7, "NormalizedEmail" = @p8, "NormalizedUserName" = @p9, "PasswordHash" = @p10, "PhoneNumber" = @p11, "PhoneNumberConfirmed" = @p12, "RefreshToken" = @p13, "RefreshTokenExpiryTime" = @p14, "SecurityStamp" = @p15, "TwoFactorEnabled" = @p16, "UserName" = @p17
+WHERE "Id" = @p18 AND "ConcurrencyStamp" = @p19;
+[2025-03-04 12:45:46.498 +03:00] [INF] Executing OkObjectResult, writing value of type 'chatbackend.DTOs.Account.LogResponseDto'.
+[2025-03-04 12:45:46.503 +03:00] [INF] Executed action chatbackend.Controllers.AccountController.Register (chatbackend) in 694.5563ms
+[2025-03-04 12:45:46.503 +03:00] [INF] Executed endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:45:46.504 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 200 608 application/json; charset=utf-8 707.1521ms
+[2025-03-04 12:46:59.078 +03:00] [INF] Request starting HTTP/1.1 POST http://localhost:5148/api/auth/register - application/x-www-form-urlencoded 151385
+[2025-03-04 12:46:59.080 +03:00] [INF] Executing endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:46:59.080 +03:00] [INF] Route matched with {action = "Register", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(chatbackend.DTOs.Account.RegisterDto) on controller chatbackend.Controllers.AccountController (chatbackend).
+[2025-03-04 12:46:59.123 +03:00] [INF] Executed action chatbackend.Controllers.AccountController.Register (chatbackend) in 42.7175ms
+[2025-03-04 12:46:59.123 +03:00] [INF] Executed endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:46:59.124 +03:00] [ERR] An unhandled exception has occurred while executing the request.
+System.ArgumentException: The key '7c�DEF�s����             �� )     !1A"2Q3B#aR��   ? �)Dn�~���r�ɴj!(�bX���WPy$�2U�cM�p yk�g̠�F�[�#�j� ���8z~I�h䰌���j\m�;�n�
+�Ro��IF[�$�"z,ԣF��7�P�f n	Z��V�,�Q�r�' is invalid JQuery syntax because it is missing a closing bracket. (Parameter 'key')
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryKeyValuePairNormalizer.NormalizeJQueryToMvc(StringBuilder builder, String key)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryKeyValuePairNormalizer.GetValues(IEnumerable`1 originalValues, Int32 valueCount)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryFormValueProviderFactory.AddValueProviderAsync(ValueProviderFactoryContext context)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.CompositeValueProvider.CreateAsync(ActionContext actionContext, IList`1 factories)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.CompositeValueProvider.TryCreateAsync(ActionContext actionContext, IList`1 factories)
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerBinderDelegateProvider.<>c__DisplayClass0_0.<<CreateBinderDelegate>g__Bind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+[2025-03-04 12:46:59.139 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 500 null text/plain; charset=utf-8 60.6189ms
+[2025-03-04 12:47:15.489 +03:00] [INF] Application is shutting down...

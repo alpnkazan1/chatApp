@@ -4,30 +4,47 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 using chatbackend.Interfaces;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace chatbackend.Service
 {
-    public class MyAuthorizationService : IAuthorizationService //Implementing Interface
+    public class MyAuthorizationService : IMyAuthorizationService //Implementing Interface
     {
         private readonly ApplicationDBContext _context;
         private readonly ILogger<MyAuthorizationService> _logger;
         private readonly string _baseFilePath;
         private readonly string _urlSigningKey;
-        private readonly IUrlHelper _urlHelper; //IUrlHelper
+        private readonly IConfiguration _config;
+        private readonly IUrlHelperFactory _urlHelperFactory;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public MyAuthorizationService(
             ApplicationDBContext context,
             ILogger<MyAuthorizationService> logger,
-            IConfiguration configuration,
-            IUrlHelper urlHelper)
+            IUrlHelperFactory urlHelperFactory,
+            IHttpContextAccessor httpContextAccessor,
+            IConfiguration config)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _urlHelper = urlHelper ?? throw new ArgumentNullException(nameof(urlHelper));
+            _urlHelperFactory = urlHelperFactory ?? throw new ArgumentNullException(nameof(urlHelperFactory));
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            _config = config;
 
-            //Load from Configuration
-            _baseFilePath = configuration["FileStorage:BaseFilePath"] ?? throw new ArgumentNullException("FileStorage:BaseFilePath");
-            _urlSigningKey = configuration["UrlSigningKey"] ?? throw new ArgumentNullException("UrlSigningKey");
+            _baseFilePath = _config["FileStorage:BaseFilePath"] ?? throw new ArgumentNullException("basefilePath");
+            _urlSigningKey = _config["UrlSigningKey"] ?? throw new ArgumentNullException("UrlSigningKey");
+        }
+
+        private IUrlHelper GetUrlHelper()
+        {
+            var actionContext = new ActionContext(
+                _httpContextAccessor.HttpContext,
+                _httpContextAccessor.HttpContext.GetRouteData(),
+                new ControllerActionDescriptor()
+            );
+
+            return _urlHelperFactory.GetUrlHelper(actionContext);
         }
 
         //URL Signing functions
@@ -49,7 +66,8 @@ namespace chatbackend.Service
             var expirationTime = DateTime.UtcNow.AddHours(expirationHours);
 
             // Create the URL
-            var url = _urlHelper.Action("GetFile", "Content", new { folderName = _baseFilePath + "/" + folderName, fileName = fileNameWithExtension, expires = expirationTime.Ticks }, "https");
+            var urlHelper = GetUrlHelper();
+            var url = urlHelper.Action("GetFile", "Content", new { folderName = _baseFilePath + "/" + folderName, fileName = fileNameWithExtension, expires = expirationTime.Ticks }, "https");
 
             //Sign the url
             var signedUrl = SignUrl(url, _urlSigningKey);
@@ -65,7 +83,8 @@ namespace chatbackend.Service
 
             var expirationTime = DateTime.UtcNow.AddHours(expirationHours);
 
-            var url = _urlHelper.Action("GetFile", "Content", new { folderName = _baseFilePath + "/" + folderName, fileName = fileNameWithExtension, expires = expirationTime.Ticks }, "https");
+            var urlHelper = GetUrlHelper();
+            var url = urlHelper.Action("GetFile", "Content", new { folderName = _baseFilePath + "/" + folderName, fileName = fileNameWithExtension, expires = expirationTime.Ticks }, "https");
 
             //Sign the url
             var signedUrl = SignUrl(url, _urlSigningKey);
@@ -76,7 +95,8 @@ namespace chatbackend.Service
         public bool IsHashValid(string folderName, string fileName, long expires, string hash)
         {
             // Create original url, notice parameters order must match the original one during signature creation
-            string url = _urlHelper.Action("GetFile", "Content", new { folderName = folderName, fileName = fileName, expires = expires }, "https");
+            var urlHelper = GetUrlHelper();
+            string url = urlHelper.Action("GetFile", "Content", new { folderName = folderName, fileName = fileName, expires = expires }, "https");
 
             // Create the signature
             string signature = SignUrl(url, _urlSigningKey);
