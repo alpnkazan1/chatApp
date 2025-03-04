@@ -1,3 +1,4 @@
+using System.Text;
 using chatbackend.Data;
 using chatbackend.Interfaces;
 using chatbackend.Models;
@@ -9,60 +10,67 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.Json;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 1. Configure Logging (Serilog)
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Information) // Reduce Microsoft's log spam
-    .Enrich.FromLogContext() // Enrich logs with context properties (e.g., request ID)
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .Enrich.FromLogContext()
     .WriteTo.File(
-        path: "Logs/log-.txt", // Log file path
-        rollingInterval: RollingInterval.Day, // Create a new log file each day
-        outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}] [{Level:u3}] {Message:lj}{NewLine}{Exception}" // Log format
+        path: "Logs/log-.txt",
+        rollingInterval: RollingInterval.Day,
+        outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}] [{Level:u3}] {Message:lj}{NewLine}{Exception}"
     )
     .CreateLogger();
 
 builder.Services.AddSerilog();
 
 
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
-
-
-// This is the connection to postgresql database
-// Connection String needs to be customized depending on sql database
-builder.Services.AddDbContext<ApplicationDBContext>(options =>{
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-
-// This handles object cycles (circular references) in JSON serialization
-// JSON serialization is turning data structures into JSON strings
-builder.Services.AddControllers().AddNewtonsoftJson(options => {
+// 2. Add Basic Services (Controllers, OpenAPI)
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 });
 
-builder.Services.AddIdentity<User, IdentityRole>(options => {
+builder.Services.AddOpenApi();
+
+
+// 3. Configure Database Context (PostgreSQL)
+builder.Services.AddDbContext<ApplicationDBContext>((serviceProvider, options) =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+    var logger = serviceProvider.GetRequiredService<ILogger<ApplicationDBContext>>();
+    options.EnableDetailedErrors();
+    options.EnableSensitiveDataLogging(); // NEVER in production
+}, ServiceLifetime.Scoped);
+
+
+
+// 4. Configure Identity
+builder.Services.AddIdentity<User, IdentityRole<Guid>>(options =>
+{
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 12;
-}).AddEntityFrameworkStores<ApplicationDBContext>();
+})
+    .AddEntityFrameworkStores<ApplicationDBContext>();
 
-builder.Services.AddAuthentication(options => {
-    options.DefaultAuthenticateScheme =
-    options.DefaultForbidScheme =
-    options.DefaultScheme =
-    options.DefaultSignInScheme =
-    options.DefaultChallengeScheme =
-    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options => {
+// 5. Configure JWT Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = options.DefaultForbidScheme =
+    options.DefaultScheme = options.DefaultSignInScheme =
+    options.DefaultChallengeScheme = options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -71,23 +79,17 @@ builder.Services.AddAuthentication(options => {
         ValidAudience = builder.Configuration["JWT:Audience"],
         ValidateIssuerSigningKey = true,
         ValidateLifetime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(
-            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
-        )
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]))
     };
+
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
         {
-            // Add authentication token from query string
             var accessToken = context.Request.Query["accessToken"];
-
-            // If the request is for our hub...
             var path = context.HttpContext.Request.Path;
-            if (!string.IsNullOrEmpty(accessToken) &&
-                (path.StartsWithSegments("/chatHub")))
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chatHub"))
             {
-                // Read the token out of the query string
                 context.Token = accessToken;
             }
             return Task.CompletedTask;
@@ -95,44 +97,49 @@ builder.Services.AddAuthentication(options => {
     };
 });
 
+// 6. Register Application Services (Scoped, Singleton, etc.)
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("UserOwnsResource", policy =>
-        policy.RequireClaim("userid"));
+    options.AddPolicy("UserOwnsResource", policy => policy.RequireClaim("userid"));
 });
 
+builder.Services.AddScoped(provider =>
+{
+    var logger = provider.GetRequiredService<ILogger<FileSystemAccess>>();
+    return new FileSystemAccess(logger, builder.Configuration["FileStorage:BaseFilePath"]);
+});
 
-// These are dependency injections, they allow for implicit construction of interfaced models
-// Controllers utilize implicit declarations. For example:
-// Instead of creating StockRepository, stock controller creates IStockRepository
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthorizationService, MyAuthorizationService>();
+
 builder.Services.AddScoped<IUrlHelper>(provider =>
 {
     var actionContext = provider.GetRequiredService<IActionContextAccessor>().ActionContext;
     var factory = provider.GetRequiredService<IUrlHelperFactory>();
     return factory.GetUrlHelper(actionContext);
 });
+
 builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-
+// Build the Application
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    // This allows for swagger connection. v1.json is the default openapi json.
-    app.UseSwaggerUI(c =>{
-        c.SwaggerEndpoint("/openapi/v1.json","Demo Api");
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/openapi/v1.json", "Demo Api");
     });
 }
 
 app.UseHttpsRedirection();
 
-// For JWT
+// Authentication & Authorization
 app.UseAuthentication();
 app.UseAuthorization();
 

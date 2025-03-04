@@ -33,7 +33,7 @@ public class ChatHub : Hub
     {
         var httpContext = Context.GetHttpContext();
         // 1. Get the access token securely
-        string accessToken = httpContext?.Request.Headers["Authorization"]
+        string? accessToken = httpContext?.Request.Headers["Authorization"]
             .ToString().Replace("Bearer ", "", StringComparison.OrdinalIgnoreCase);
 
         if (string.IsNullOrEmpty(accessToken))
@@ -54,7 +54,7 @@ public class ChatHub : Hub
         }
 
         // 3. Get the UserId
-        string userId = principal.FindFirstValue(JwtRegisteredClaimNames.Sub) 
+        string? userId = principal.FindFirstValue(JwtRegisteredClaimNames.Sub) 
                         ?? principal.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (string.IsNullOrEmpty(userId))
@@ -66,7 +66,7 @@ public class ChatHub : Hub
 
 
         // 4. Get the chatId from the query string
-        string chatIdString = httpContext?.Request.Query["chatId"];
+        string? chatIdString = httpContext?.Request.Query["chatId"];
 
         if (!Guid.TryParse(chatIdString, out Guid chatId))
         {
@@ -98,7 +98,7 @@ public class ChatHub : Hub
     public override async Task OnDisconnectedAsync(Exception exception)
     {
         var httpContext = Context.GetHttpContext();
-        string chatIdString = httpContext?.Request.Query["chatId"];
+        string? chatIdString = httpContext?.Request.Query["chatId"];
 
         // If middleware stored chatId in Context.Items, retrieve it
         if (string.IsNullOrEmpty(chatIdString) && Context.Items.TryGetValue("chatId", out var chatIdObj))
@@ -127,7 +127,7 @@ public class ChatHub : Hub
 
     public async Task SendMessage(MessageSendDto messageDto)
     {
-        string userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        string? userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (string.IsNullOrEmpty(userId))
         {

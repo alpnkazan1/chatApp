@@ -235,7 +235,7 @@ namespace chatbackend.Controllers
             }
 
             // Fetch user information from the database
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id.ToString() == userId);
 
             if (user == null)
             {
@@ -252,7 +252,7 @@ namespace chatbackend.Controllers
             // Construct the response object
             var response = new AuthCheckDto
             {
-                Id = user.Id,
+                Id = user.Id.ToString(),
                 UserName = user.UserName,
                 Email = user.Email,
                 Avatar = avatarUrl // Server should return a URL for avatar

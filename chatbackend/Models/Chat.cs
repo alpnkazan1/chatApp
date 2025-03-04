@@ -14,8 +14,10 @@ namespace chatbackend.Models
         public Guid User2Id { get; set; }
 
         [Required]
+        [ForeignKey("User1Id")]
         public required User User1 { get; set; }
         [Required]
+        [ForeignKey("User2Id")]
         public required User User2 { get; set; }
 
         [Required]

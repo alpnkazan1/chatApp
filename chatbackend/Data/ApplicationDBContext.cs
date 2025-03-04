@@ -12,23 +12,16 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace chatbackend.Data
 {
-    public class ApplicationDBContext : IdentityDbContext<User>
+    public class ApplicationDBContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
-
-        private readonly string _baseFilePath;
         private readonly ILogger<ApplicationDBContext> _logger;
-        private readonly IWebHostEnvironment _environment;
         private readonly FileSystemAccess _filesystemAccess;
-        public ApplicationDBContext(DbContextOptions dbContextOptions, 
-                                    IConfiguration configuration,
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> dbContextOptions,
                                     ILogger<ApplicationDBContext> logger,
-                                    IWebHostEnvironment environment,
                                     FileSystemAccess filesystemAccess) 
                                         : base(dbContextOptions)
         {
-            _baseFilePath = configuration["FileStorage:BaseFilePath"];
             _logger = logger;
-            _environment = environment;
             _filesystemAccess = filesystemAccess;
         }
 
