@@ -93,10 +93,16 @@ namespace chatbackend.Controllers
         }     
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromForm] RegisterDto registerDto)
+        public async Task<IActionResult> Register([FromForm] RegisterDto registerDto)  
         {
             try
             {
+                var validationResult = InputValidation.ValidateUsername(registerDto.Username, _logger);
+                if (validationResult != null)
+                {
+                    return validationResult; // Return the BadRequest result
+                }
+
                 if (!ModelState.IsValid)
                 {
                     _logger.LogWarning("Invalid registration attempt. Model state errors: {ModelStateErrors}", ModelState);

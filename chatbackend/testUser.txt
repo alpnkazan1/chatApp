@@ -4,7 +4,7 @@
   "password": "rAt1*nal_InvesT"
 }
 {
-  "username": "John Smith",
+  "username": "JohnSmith",
   "email": "taxidriver@mail.com",
   "password": "TaxiL_123J@hn"
 }

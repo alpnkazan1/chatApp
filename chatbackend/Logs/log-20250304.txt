@@ -666,3 +666,146 @@ System.ArgumentException: The key '7c�DEF�s����             
    at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
 [2025-03-04 12:46:59.139 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 500 null text/plain; charset=utf-8 60.6189ms
 [2025-03-04 12:47:15.489 +03:00] [INF] Application is shutting down...
+[2025-03-04 12:57:02.374 +03:00] [INF] User profile is available. Using '/home/derail/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[2025-03-04 12:57:02.586 +03:00] [INF] Now listening on: http://localhost:5148
+[2025-03-04 12:57:02.588 +03:00] [INF] Application started. Press Ctrl+C to shut down.
+[2025-03-04 12:57:02.588 +03:00] [INF] Hosting environment: Development
+[2025-03-04 12:57:02.589 +03:00] [INF] Content root path: /home/derail/Desktop/chatApp/chatbackend
+[2025-03-04 12:57:12.633 +03:00] [INF] Request starting HTTP/1.1 POST http://localhost:5148/api/auth/register - application/x-www-form-urlencoded 151384
+[2025-03-04 12:57:12.669 +03:00] [WRN] Failed to determine the https port for redirect.
+[2025-03-04 12:57:12.703 +03:00] [INF] Executing endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:57:12.746 +03:00] [INF] Route matched with {action = "Register", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(chatbackend.DTOs.Account.RegisterDto) on controller chatbackend.Controllers.AccountController (chatbackend).
+[2025-03-04 12:57:12.952 +03:00] [INF] Executed action chatbackend.Controllers.AccountController.Register (chatbackend) in 201.3167ms
+[2025-03-04 12:57:12.963 +03:00] [INF] Executed endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 12:57:12.965 +03:00] [ERR] An unhandled exception has occurred while executing the request.
+System.ArgumentException: The key '7c�DEF�s����             �� )     !1A"2Q3B#aR��   ? �)Dn�~���r�ɴj!(�bX���WPy$�2U�cM�p yk�g̠�F�[�#�j� ���8z~I�h䰌���j\m�;�n�
+�Ro��IF[�$�"z,ԣF��7�P�f n	Z��V�,�Q�r�' is invalid JQuery syntax because it is missing a closing bracket. (Parameter 'key')
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryKeyValuePairNormalizer.NormalizeJQueryToMvc(StringBuilder builder, String key)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryKeyValuePairNormalizer.GetValues(IEnumerable`1 originalValues, Int32 valueCount)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryFormValueProviderFactory.AddValueProviderAsync(ValueProviderFactoryContext context)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.CompositeValueProvider.CreateAsync(ActionContext actionContext, IList`1 factories)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.CompositeValueProvider.TryCreateAsync(ActionContext actionContext, IList`1 factories)
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerBinderDelegateProvider.<>c__DisplayClass0_0.<<CreateBinderDelegate>g__Bind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+[2025-03-04 12:57:12.987 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 500 null text/plain; charset=utf-8 356.0282ms
+[2025-03-04 13:05:48.724 +03:00] [INF] Request starting HTTP/1.1 POST http://localhost:5148/api/auth/register - application/x-www-form-urlencoded 151379
+[2025-03-04 13:05:48.733 +03:00] [INF] Executing endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 13:05:48.733 +03:00] [INF] Route matched with {action = "Register", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(chatbackend.DTOs.Account.RegisterDto) on controller chatbackend.Controllers.AccountController (chatbackend).
+[2025-03-04 13:05:48.779 +03:00] [INF] Executed action chatbackend.Controllers.AccountController.Register (chatbackend) in 45.7934ms
+[2025-03-04 13:05:48.780 +03:00] [INF] Executed endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 13:05:48.787 +03:00] [ERR] An unhandled exception has occurred while executing the request.
+System.ArgumentException: The key '7c�DEF�s����             �� )     !1A"2Q3B#aR��   ? �)Dn�~���r�ɴj!(�bX���WPy$�2U�cM�p yk�g̠�F�[�#�j� ���8z~I�h䰌���j\m�;�n�
+�Ro��IF[�$�"z,ԣF��7�P�f n	Z��V�,�Q�r�' is invalid JQuery syntax because it is missing a closing bracket. (Parameter 'key')
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryKeyValuePairNormalizer.NormalizeJQueryToMvc(StringBuilder builder, String key)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryKeyValuePairNormalizer.GetValues(IEnumerable`1 originalValues, Int32 valueCount)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryFormValueProviderFactory.AddValueProviderAsync(ValueProviderFactoryContext context)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.CompositeValueProvider.CreateAsync(ActionContext actionContext, IList`1 factories)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.CompositeValueProvider.TryCreateAsync(ActionContext actionContext, IList`1 factories)
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerBinderDelegateProvider.<>c__DisplayClass0_0.<<CreateBinderDelegate>g__Bind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+[2025-03-04 13:05:48.790 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 500 null text/plain; charset=utf-8 67.4707ms
+[2025-03-04 13:05:54.026 +03:00] [INF] Request starting HTTP/1.1 POST http://localhost:5148/api/auth/register - application/x-www-form-urlencoded 151384
+[2025-03-04 13:05:54.030 +03:00] [INF] Executing endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 13:05:54.030 +03:00] [INF] Route matched with {action = "Register", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(chatbackend.DTOs.Account.RegisterDto) on controller chatbackend.Controllers.AccountController (chatbackend).
+[2025-03-04 13:05:54.069 +03:00] [INF] Executed action chatbackend.Controllers.AccountController.Register (chatbackend) in 38.7089ms
+[2025-03-04 13:05:54.069 +03:00] [INF] Executed endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 13:05:54.069 +03:00] [ERR] An unhandled exception has occurred while executing the request.
+System.ArgumentException: The key '7c�DEF�s����             �� )     !1A"2Q3B#aR��   ? �)Dn�~���r�ɴj!(�bX���WPy$�2U�cM�p yk�g̠�F�[�#�j� ���8z~I�h䰌���j\m�;�n�
+�Ro��IF[�$�"z,ԣF��7�P�f n	Z��V�,�Q�r�' is invalid JQuery syntax because it is missing a closing bracket. (Parameter 'key')
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryKeyValuePairNormalizer.NormalizeJQueryToMvc(StringBuilder builder, String key)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryKeyValuePairNormalizer.GetValues(IEnumerable`1 originalValues, Int32 valueCount)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryFormValueProviderFactory.AddValueProviderAsync(ValueProviderFactoryContext context)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.CompositeValueProvider.CreateAsync(ActionContext actionContext, IList`1 factories)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.CompositeValueProvider.TryCreateAsync(ActionContext actionContext, IList`1 factories)
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerBinderDelegateProvider.<>c__DisplayClass0_0.<<CreateBinderDelegate>g__Bind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+[2025-03-04 13:05:54.070 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 500 null text/plain; charset=utf-8 44.0775ms
+[2025-03-04 13:06:30.754 +03:00] [INF] Application is shutting down...
+[2025-03-04 13:06:43.098 +03:00] [INF] User profile is available. Using '/home/derail/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[2025-03-04 13:06:43.303 +03:00] [INF] Now listening on: http://localhost:5148
+[2025-03-04 13:06:43.307 +03:00] [INF] Application started. Press Ctrl+C to shut down.
+[2025-03-04 13:06:43.307 +03:00] [INF] Hosting environment: Development
+[2025-03-04 13:06:43.307 +03:00] [INF] Content root path: /home/derail/Desktop/chatApp/chatbackend
+[2025-03-04 13:06:47.939 +03:00] [INF] Request starting HTTP/1.1 POST http://localhost:5148/api/auth/register - application/x-www-form-urlencoded 151384
+[2025-03-04 13:06:47.980 +03:00] [WRN] Failed to determine the https port for redirect.
+[2025-03-04 13:06:48.014 +03:00] [INF] Executing endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 13:06:48.051 +03:00] [INF] Route matched with {action = "Register", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(System.String, System.String, System.String, Microsoft.AspNetCore.Http.IFormFile) on controller chatbackend.Controllers.AccountController (chatbackend).
+[2025-03-04 13:06:48.258 +03:00] [INF] Executed action chatbackend.Controllers.AccountController.Register (chatbackend) in 199.9649ms
+[2025-03-04 13:06:48.267 +03:00] [INF] Executed endpoint 'chatbackend.Controllers.AccountController.Register (chatbackend)'
+[2025-03-04 13:06:48.268 +03:00] [ERR] An unhandled exception has occurred while executing the request.
+System.ArgumentException: The key '7c�DEF�s����             �� )     !1A"2Q3B#aR��   ? �)Dn�~���r�ɴj!(�bX���WPy$�2U�cM�p yk�g̠�F�[�#�j� ���8z~I�h䰌���j\m�;�n�
+�Ro��IF[�$�"z,ԣF��7�P�f n	Z��V�,�Q�r�' is invalid JQuery syntax because it is missing a closing bracket. (Parameter 'key')
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryKeyValuePairNormalizer.NormalizeJQueryToMvc(StringBuilder builder, String key)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryKeyValuePairNormalizer.GetValues(IEnumerable`1 originalValues, Int32 valueCount)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.JQueryFormValueProviderFactory.AddValueProviderAsync(ValueProviderFactoryContext context)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.CompositeValueProvider.CreateAsync(ActionContext actionContext, IList`1 factories)
+   at Microsoft.AspNetCore.Mvc.ModelBinding.CompositeValueProvider.TryCreateAsync(ActionContext actionContext, IList`1 factories)
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerBinderDelegateProvider.<>c__DisplayClass0_0.<<CreateBinderDelegate>g__Bind|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+[2025-03-04 13:06:48.295 +03:00] [INF] Request finished HTTP/1.1 POST http://localhost:5148/api/auth/register - 500 null text/plain; charset=utf-8 360.6796ms
+[2025-03-04 13:06:51.413 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.html - null null
+[2025-03-04 13:06:51.513 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.html - 200 null text/html;charset=utf-8 100.0353ms
+[2025-03-04 13:06:51.593 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.js - null null
+[2025-03-04 13:06:51.594 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.js - 200 null application/javascript;charset=utf-8 1.5832ms
+[2025-03-04 13:06:51.725 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/favicon-16x16.png - null null
+[2025-03-04 13:06:51.744 +03:00] [INF] Sending file. Request path: '/favicon-16x16.png'. Physical path: 'N/A'
+[2025-03-04 13:06:51.744 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/favicon-16x16.png - 200 665 image/png 19.5176ms
+[2025-03-04 13:06:51.811 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/openapi/v1.json - null null
+[2025-03-04 13:06:51.813 +03:00] [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 13:06:52.028 +03:00] [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 13:06:52.029 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/openapi/v1.json - 200 null application/json;charset=utf-8 217.4002ms
+[2025-03-04 13:14:29.948 +03:00] [INF] Application is shutting down...
+[2025-03-04 13:15:11.033 +03:00] [INF] User profile is available. Using '/home/derail/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[2025-03-04 13:15:11.225 +03:00] [INF] Now listening on: http://localhost:5148
+[2025-03-04 13:15:11.227 +03:00] [INF] Application started. Press Ctrl+C to shut down.
+[2025-03-04 13:15:11.228 +03:00] [INF] Hosting environment: Development
+[2025-03-04 13:15:11.228 +03:00] [INF] Content root path: /home/derail/Desktop/chatApp/chatbackend
+[2025-03-04 13:15:17.021 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.html - null null
+[2025-03-04 13:15:17.150 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.html - 200 null text/html;charset=utf-8 131.4752ms
+[2025-03-04 13:15:17.235 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/index.js - null null
+[2025-03-04 13:15:17.241 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/index.js - 200 null application/javascript;charset=utf-8 7.3435ms
+[2025-03-04 13:15:17.377 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/swagger/favicon-16x16.png - null null
+[2025-03-04 13:15:17.390 +03:00] [INF] Sending file. Request path: '/favicon-16x16.png'. Physical path: 'N/A'
+[2025-03-04 13:15:17.390 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/swagger/favicon-16x16.png - 499 665 image/png 13.3157ms
+[2025-03-04 13:15:17.428 +03:00] [INF] Request starting HTTP/1.1 GET http://localhost:5148/openapi/v1.json - null null
+[2025-03-04 13:15:17.434 +03:00] [WRN] Failed to determine the https port for redirect.
+[2025-03-04 13:15:17.473 +03:00] [INF] Executing endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 13:15:17.664 +03:00] [INF] Executed endpoint 'HTTP: GET /openapi/{documentName}.json'
+[2025-03-04 13:15:17.665 +03:00] [INF] Request finished HTTP/1.1 GET http://localhost:5148/openapi/v1.json - 200 null application/json;charset=utf-8 236.6324ms
+[2025-03-04 13:17:27.066 +03:00] [INF] Application is shutting down...
