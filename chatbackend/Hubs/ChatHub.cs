@@ -1,29 +1,21 @@
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims; // Add this
+using System.Security.Claims;
 using chatbackend.Service;
-using Microsoft.AspNetCore.Authorization;
 using chatbackend.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
-using chatbackend.DTOs.Messages; // Add this
+using chatbackend.DTOs.Messages;
 
 public class ChatHub : Hub
 {
     private readonly ILogger<ChatHub> _logger;
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly MyAuthorizationService _authorizationService;
     private readonly ITokenService _tokenService;
     private readonly IMessageService _messageService;
 
-    public ChatHub(ILogger<ChatHub> logger, IHttpContextAccessor httpContextAccessor,
-                   MyAuthorizationService authorizationService, ITokenService tokenService,
-                   IMessageService messageService)
+    public ChatHub(ILogger<ChatHub> logger, MyAuthorizationService authorizationService, 
+                    ITokenService tokenService, IMessageService messageService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         _authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
         _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
         _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));

@@ -7,7 +7,7 @@ namespace chatbackend.Models
     [Table("Chats")]
     public class Chat
     {
-        public Guid ChatId { get; set; }
+        public Guid ChatId { get; set; } = Guid.NewGuid();
 
         public Guid User1Id { get; set; }
 
