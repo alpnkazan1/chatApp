@@ -19,9 +19,15 @@ namespace chatbackend.Models
         public Message Message { get; set; }
         public Guid MessageId { get; set; } // Foreign key to Message
 
+        [ForeignKey("ChatId")]
+        public Chat Chat { get; set; }
+        public Guid ChatId { get; set; } // Foreign key to Chat
+
         public Guid FileId { get; set; } // Foreign key to Message (using FileId)
         public string FolderName { get; set; } // The folder name where the file is stored
+        public string FileExtension { get; set; } // The file extension (e.g., ".png", ".jpg")
         public AccessType AccessType { get; set; } // The type of access (e.g., "Read", "Write")
+        public DateTime UpdateTime  { get; set; } = DateTime.UtcNow; // The time when the access control was updated
     }
 
     // Define an enum for the different access types

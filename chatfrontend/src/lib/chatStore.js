@@ -45,7 +45,7 @@ export const useChatStore = create((set) => ({
 
         try {
             const response = await fetch(
-                `/api/photos/${selectedChat.chatId}?limit=10&offset=${sharedPhotos.length}`
+                `/api/chat/photos/${selectedChat.chatId}?limit=10&offset=${sharedPhotos.length}`
             );
             const morePhotos = await response.json();
 

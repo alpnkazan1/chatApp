@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using chatbackend.Data;
 using chatbackend.DTOs.Chats;
 using chatbackend.Models;
+using chatbackend.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,14 +10,17 @@ using Microsoft.EntityFrameworkCore;
 namespace chatbackend.Controllers
 {
     [ApiController]
-    [Route("api/chats")]
+    [Route("api/chat")]
     public class ChatController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;        
+        private readonly MyAuthorizationService _authCheckService;
 
-        public ChatController(ApplicationDBContext context)
+
+        public ChatController(ApplicationDBContext context, MyAuthorizationService authCheckService)
         {
             _context = context;
+            _authCheckService = authCheckService;
         }
 
         [HttpPost("create")]
@@ -68,7 +73,55 @@ namespace chatbackend.Controllers
 
             return Ok(response);
         }
+    
+        [HttpGet("photos/{chatId}")]
+        public async Task<IActionResult> GetChatPhotos(Guid chatId, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
+        {
+            // Check if the user is authorized for this chat
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            bool isAuthorized = await _authCheckService.IsAuthorizedForChat(userId, chatId);
+
+            if (!isAuthorized)
+            {
+                return Forbid(); // Or Unauthorized, depending on your policy
+            }
+
+            // Fetch images from this chat which belongs to this user
+            // with the necessary access clearance
+            var photos = await _context.ACL
+                .Where(a => 
+                    a.FolderName == "images" && 
+                    a.ChatId == chatId &&
+                    a.UserId == Guid.Parse(userId) &&
+                    (a.AccessType == AccessType.Read || a.AccessType == AccessType.Full)
+                )
+                .OrderByDescending(a => a.UpdateTime) // Order by ACL UpdateTime
+                .Skip(offset)
+                .Take(limit)
+                .Select(a => new
+                {
+                    a.FileId,
+                    a.FolderName,
+                    a.FileExtension
+                })
+                .ToListAsync();
+
+            if (!photos.Any())
+            {
+                return NotFound("No photos found for this chat.");
+            }
+
+            // Generate secure URLs for photos
+            var photoUrls = photos.Select(p => new
+            {
+                FileId = p.FileId,
+                FileUrl = _authCheckService.GenerateSecuredFileURL(
+                                p.FolderName, 
+                                p.FileId.ToString() + p.FileExtension
+                            )
+            }).ToList();
+
+            return Ok(photoUrls);
+        }
     }
-
-
 }

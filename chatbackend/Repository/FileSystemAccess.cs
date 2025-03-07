@@ -1,5 +1,3 @@
-using chatbackend.Data;
-using Microsoft.EntityFrameworkCore;
 using chatbackend.Models;
 
 namespace chatbackend.Repository
@@ -151,5 +149,6 @@ namespace chatbackend.Repository
                 return false;
             }
         }
+    
     }
 }

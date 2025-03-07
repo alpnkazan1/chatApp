@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using chatbackend.Helpers;
 using chatbackend.Models;
 using chatbackend.Repository;
 using Microsoft.AspNetCore.Identity;

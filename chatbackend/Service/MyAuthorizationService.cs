@@ -6,6 +6,7 @@ using System.Text;
 using chatbackend.Interfaces;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using chatbackend.Models;
 
 namespace chatbackend.Service
 {
@@ -128,20 +129,17 @@ namespace chatbackend.Service
             return message != null;
         }
 
-        public async Task<bool> IsAuthorizedForFile(string userId, string folderName, string fileName, uint accessType)
+        public async Task<bool> IsAuthorizedForFile(string userId, string folderName, string fileName, AccessType accessType)
         {
-            /*
-                For accessTypes:
-                {
-                    Read = 0
-                    Write = 1
-                    Full = 2
-                }
-            */
             string fileId = Path.GetFileNameWithoutExtension(fileName);
 
             var file = await _context.ACL
-                .FirstOrDefaultAsync(e => e.FileId.ToString() == fileId && e.FolderName.ToString() == folderName && e.UserId.ToString() == userId && (uint)e.AccessType == accessType);
+                .FirstOrDefaultAsync(e =>
+                    e.FileId.ToString() == fileId &&
+                    e.FolderName == folderName &&
+                    e.UserId.ToString() == userId &&
+                    (e.AccessType == accessType || (e.AccessType == AccessType.Full)) 
+                );
 
             return file != null;
         }

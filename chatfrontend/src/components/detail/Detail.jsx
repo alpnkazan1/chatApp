@@ -47,7 +47,7 @@ const Detail = () => {
 
     const handleDownload = (photoUrl, photoName) => {
         const link = document.createElement("a");
-        link.href = photoUrl.replace("thumbnails", "fullsize");
+        link.href = photoUrl; //.replace("thumbnails", "fullsize")
         link.download = photoName;
         document.body.appendChild(link);
         link.click();
@@ -132,7 +132,7 @@ const Detail = () => {
                             {sharedPhotos.map((photo, index) => (
                                 <div className="photoItem" key={index}>
                                     <div className="photoDetail">
-                                        <img src={photo.thumbnailUrl} alt="Shared" />
+                                        <img src={photo.thumbnailUrl} alt="Shared Photos" loading="lazy" />
                                         <span>{photo.fileName || "Shared Image"}</span>
                                     </div>
                                     <img

@@ -1,16 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using chatbackend.Helpers;
-using chatbackend.Models;
-using System;
-using System.IO;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using chatbackend.Repository;
 using chatbackend.Data;
 using chatbackend.Service;
+using chatbackend.Models;
 
 namespace chatbackend.Controllers
 {
@@ -71,7 +65,7 @@ namespace chatbackend.Controllers
                 }
 
                 // Perform authorization check
-                if (!await _authCheckService.IsAuthorizedForFile(userId, folderName, fileName, 0))
+                if (!await _authCheckService.IsAuthorizedForFile(userId, folderName, fileName, AccessType.Read))
                 {
                     return Unauthorized("Cannot access this url!"); // Not authorized to access file
                 }

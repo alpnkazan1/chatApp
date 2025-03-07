@@ -34,7 +34,7 @@ namespace chatbackend.Controllers
         }
 
         [HttpGet("{chatId}")]
-        public async Task<IActionResult> GetMessagesByChatId(Guid chatId)
+        public async Task<IActionResult> GetMessagesByChatId(Guid chatId, [FromQuery] int? limit)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -46,11 +46,14 @@ namespace chatbackend.Controllers
                 return Forbid(); // Or Unauthorized, depending on your policy
             }
 
+            // If a limit is given take minimum of 50 and the given limit else take 50
+            int messageLimit = (limit.HasValue && limit.Value > 0) ? Math.Min(limit.Value, 50) : 50;
+
             // Get 50 messages by their chat Id
             var messages = await _context.Messages
                 .Where(m => m.ChatId == chatId)
                 .OrderByDescending(m => m.Timestamp) // Order by timestamp (or appropriate field)
-                .Take(50) // Take only the last 50 messages
+                .Take(messageLimit) // Take messageLimit number of messages
                 .ToListAsync();
 
             if (messages == null || messages.Count == 0)
