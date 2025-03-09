@@ -4,6 +4,19 @@
 
 ChatApp v0.1 is the initial public version of a real-time chat application. It is licensed under the MIT License, which can be reviewed in the `LICENSE` file. This project is currently under development and not fully functional yet. It is shared as proof of work and will be improved over time.
 
+## Current Progress
+
+* Current diagram is outdated! App structure is altered greatly since. I will update the diagram as soon as possible!
+
+Main structure of both frontend and backend is completed. However, they are yet to be linked.
+ - Frontend CSS still needs cleaning.
+ - Some functionality is modified on backend as certain initial expectations were deemed illogical while backend was being implemented. They are noted and will be modified on frontend as well.
+ - Some api calls are added to backend and should be integrated to frontend as well.
+ - Manually tested some backend controllers on development. More comprehensive testing is needed.
+ - Backend has seperation of concern (SoC) issues. Controllers include too much access. Created Repository classes to handle this issue. But, implementations are not done yet.
+ - Modified the database structure greatly. A testing needs to be done to ensure no loose ends remain there.
+ - There are many business logic considerations for the application that remains such as how user account deletion or chat deletion should be handled. Current code does not have a logically sound and realistic structure. However, it is proof of work. As such, these are secondary considerations.
+
 ## Project Structure
 
 ChatApp consists of three main components:
