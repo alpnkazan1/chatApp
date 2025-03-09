@@ -63,8 +63,10 @@ namespace chatbackend.Repository
             return types.ContainsKey(ext) ? types[ext] : "application/octet-stream";
         }
 
-        public void DeleteFile(string folderName, string fileNameWithExtension)
+        public void DeleteFile(string? folderName, string? fileNameWithExtension)
         {
+            if(folderName == null || fileNameWithExtension == null) return;
+
             string filePath = Path.Combine(_baseFilePath, folderName, fileNameWithExtension);
 
             try
@@ -150,5 +152,18 @@ namespace chatbackend.Repository
             }
         }
     
+        public string? GetFileNameWithExtension(string? folderName, string? fileNameWithoutExtension)
+        {
+            if(folderName == null || fileNameWithoutExtension == null) return null;
+
+            string folderPath = Path.Combine(_baseFilePath, folderName);
+            
+            if (!Directory.Exists(folderPath))
+                return null;
+
+            var matchingFiles = Directory.GetFiles(folderPath, $"{fileNameWithoutExtension}.*");
+            
+            return matchingFiles.Length > 0 ? Path.GetFileName(matchingFiles[0]) : null;
+        }   
     }
 }

@@ -5,7 +5,7 @@ public static class InputValidation
 {
     // Regular expression to allow only alphanumeric characters and underscores
     private static readonly Regex _usernameRegex = new Regex("^[a-zA-Z0-9_]+$", RegexOptions.Compiled);
-    public static IActionResult ValidateUsername(string username, ILogger logger)
+    public static IActionResult ValidateUsername(string? username, ILogger logger)
     {
         if (string.IsNullOrEmpty(username))
         {

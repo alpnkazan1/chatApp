@@ -22,13 +22,9 @@ const Detail = () => {
 
     const handleBlockUser = async () => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/block-user`, {
+            const response = await fetch(`${API_BASE_URL}/api/users/block-user/${selectedChat?.userName}`, {
                 method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ deleteChat })
+                credentials: "include"
             });
 
             if (!response.ok) throw new Error("Failed to block user");
@@ -37,7 +33,7 @@ const Detail = () => {
             setIsBlockModalOpen(false);
 
             if (deleteChat) {
-                useChatStore.getState().clearChat();
+                clearChat();
             }
         } catch (err) {
             console.error(err);

@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using chatbackend.Data;
 using chatbackend.DTOs.Account;
 using chatbackend.Interfaces;
@@ -114,6 +110,7 @@ namespace chatbackend.Controllers
                     UserName = registerDto.Username,
                     Email = registerDto.Email
                 };
+                if(registerDto.Password == null) return StatusCode(500, "Provide Password!");
 
                 var createdUserResult = await _userManager.CreateAsync(appUser, registerDto.Password);
 
@@ -267,6 +264,42 @@ namespace chatbackend.Controllers
             return Ok(response);
         }
     
-        
+        [HttpDelete("delete-account")]
+        public async Task<IActionResult> DeleteAccount()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Unauthorized("User is not authenticated");
+            }
+            
+            var user = await _context.Users.FindAsync(Guid.Parse(userId));
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            // Rename user to [deleted]
+            user.UserName = "[deleted]";
+            user.Email = "";
+            user.RefreshToken = null;
+            _fileSystemAccess.DeleteFile("avatars", _fileSystemAccess.GetFileNameWithExtension("avatars", user.AvatarId.ToString()));
+            user.AvatarId = null;
+            
+            // Block all chats involving this user
+            var chats = await _context.Chats
+                .Where(c => c.User1Id == user.Id || c.User2Id == user.Id)
+                .ToListAsync();
+            
+            foreach (var chat in chats)
+            {
+                chat.BlockFlag = 3; // Prevent any further messages
+            }
+            
+            await _context.SaveChangesAsync();
+            
+            return Ok("Account deleted successfully.");
+        }
+
     }
 }
