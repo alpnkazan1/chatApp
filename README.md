@@ -1,12 +1,16 @@
 # ChatApp v0.1
 
+> **Warning:**
+> 
+> <pre style="background-color: #ffcc00; padding: 10px; border-radius: 5px; font-size: 16px; color: #333; font-weight: bold;">
+> Current diagram is outdated! App structure is altered greatly since. I will update the diagram as soon as possible!
+> </pre>
+
 ## Overview
 
 ChatApp v0.1 is the initial public version of a real-time chat application. It is licensed under the MIT License, which can be reviewed in the `LICENSE` file. This project is currently under development and not fully functional yet. It is shared as proof of work and will be improved over time.
 
 ## Current Progress
-
-* Current diagram is outdated! App structure is altered greatly since. I will update the diagram as soon as possible!
 
 Main structure of both frontend and backend is completed. However, they are yet to be linked.
  - Frontend CSS still needs cleaning.
