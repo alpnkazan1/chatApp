@@ -30,7 +30,7 @@ ChatApp consists of three main components:
 - The frontend code includes **MSW (Mock Service Worker) mocks** for standalone testing to some extent.
 
 ### ASP.NET 9.0 Backend
-- The backend structure is inspired by a design from [teddysmithdev](https://github.com/teddysmithdev), but the API logic, WebSocket implementation, and overall architecture differ significantly.
+- The backend structure is inspired by a design from [teddysmithdev](https://github.com/teddysmithdev), but the API logic, WebSocket implementation, and overall architecture differ significantly and belong to me completely.
 
 ### PostgreSQL Database
 - The database structure is entirely custom-built and can be observed in `appSchematic.jpg`. For implementation, you will likely need to change DefaultConnection.
