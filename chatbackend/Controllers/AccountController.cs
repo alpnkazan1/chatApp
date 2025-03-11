@@ -42,7 +42,7 @@ namespace chatbackend.Controllers
         }
 
         [HttpPost("login")]      
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<IActionResult> Login([FromForm] LoginDto loginDto)
         {
             if (!ModelState.IsValid)
             {
@@ -153,28 +153,10 @@ namespace chatbackend.Controllers
                     }
                 }
 
-                // Generate tokens
-                var accessToken = _tokenService.CreateToken(appUser);
-                var refreshToken = _tokenService.GenerateRefreshToken();
-
-                // Add refresh token to database
-                appUser.RefreshToken = refreshToken;
-                appUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(1);
-
-                var finalUpdateResult = await _userManager.UpdateAsync(appUser);
-
-                if (!finalUpdateResult.Succeeded)
-                {
-                    _logger.LogError("Failed to update user {Username} with refresh token. Errors: {Errors}", appUser.UserName, finalUpdateResult.Errors);
-                    return StatusCode(500, "Failed to update user with refresh token.");
-                }
-
-                return Ok(new LogResponseDto
+                return Ok(new RegisterResponseDto
                 {
                     UserName = appUser.UserName,
-                    Email = appUser.Email,
-                    Token = accessToken,
-                    RefreshToken = refreshToken
+                    Email = appUser.Email
                 });
             }
             catch (Exception e)

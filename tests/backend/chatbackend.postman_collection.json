@@ -1,0 +1,320 @@
+{
+	"info": {
+		"_postman_id": "4912632d-e95a-447f-b0c7-25788488ed7b",
+		"name": "chatbackend",
+		"description": "# ⛓️ Get started here\n\nPostman allows you to test your APIs using simple Javascript code. You can evaluate your response body, headers, cookies, and more using the [ChaiJS BDD](https://www.chaijs.com/api/bdd/) syntax.\n\nThis template guides you through the process of setting up an integration test to ensure that all individual components of an API function together seamlessly.\n\nThe API under test in this collection includes three endpoints for registering and receiving a token, accessing your unique generated name, and unregistering a token:\n\n- POST `/register`\n- POST `/unregister`\n- GET `/my-name`\n    \n\nBy setting up requests in the order of the operation, we can test the flow of data to and from the endpoints and ensure they work together as expected. We also verify that the data persists between requests on the back end.\n\n## 🔖 **How to use this template**\n\n**Step 1:** Check out the requests' documentation to learn more about -\n\n- what each request is meant to do.\n- the tests we've added against each one.\n    \n\n**Step 2:** Run this collection by clicking on \"Run\".\n\n<img src=\"https://content.pstmn.io/84019b0f-69c8-4c5f-98b9-2c90a6f9a0b1/Y29sbGVjdGlvbi1ydW5uZXItYnV0dG9uLmpwZWc=\" alt=\"\" height=\"103\" width=\"266\">\n\n**Step 3:** To customize this template, replace the request URLs with your API endpoints and add or edit the tests if needed.\n\n## ℹ️ Resources\n\n[Scripting in Postman](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/)\n\n[Test script examples](https://learning.postman.com/docs/writing-scripts/script-references/test-examples/)\n\n[Postman Sandbox API reference](https://learning.postman.com/docs/sending-requests/grpc/postman-sandbox-api/#writing-assertions)\n\n[Using the Collection Runner](https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "42454711"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"An access token is returned\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('token')",
+							"    pm.expect(pm.response.json().token).to.be.a('string')",
+							"    // Set the collection-scope \"token\" variable to the token received from the API",
+							"    // This lets us use it in other requests",
+							"    pm.collectionVariables.set('token', pm.response.json().token)",
+							"})",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "rationalInvestor",
+							"type": "text"
+						},
+						{
+							"key": "Email",
+							"value": "rationalInvestor@very.com",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "rAt1*nal_InvesT",
+							"type": "text"
+						},
+						{
+							"key": "Avatar",
+							"type": "file",
+							"src": "/home/derail/Downloads/avatarRoblox.jpeg"
+						}
+					]
+				},
+				"url": "{{baseUrl}}/api/auth/register",
+				"description": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection."
+			},
+			"response": [
+				{
+					"name": "Register",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Username",
+									"value": "JohnSmith",
+									"type": "text"
+								},
+								{
+									"key": "Email",
+									"value": "taxidriver@mail.com",
+									"type": "text"
+								},
+								{
+									"key": "Password",
+									"value": "TaxiL_123J@hn",
+									"type": "text"
+								},
+								{
+									"key": "Avatar",
+									"type": "file",
+									"src": "/home/derail/Downloads/avatarsaw.jpeg"
+								}
+							]
+						},
+						"url": "{{baseUrl}}/api/auth/register"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "578"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 06 Mar 2025 10:33:06 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"userName\": \"JohnSmith\",\n    \"email\": \"taxidriver@mail.com\",\n    \"token\": \"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MWM3MWU1NC0wOTEyLTRjZTItYjk1MC00YjliZTQ2OWMzYzUiLCJlbWFpbCI6InRheGlkcml2ZXJAbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiSm9oblNtaXRoIiwibmJmIjoxNzQxMjU3MTg3LCJleHAiOjE3NDEyNjA3ODcsImlhdCI6MTc0MTI1NzE4NywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ4IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ4In0.s4kV0hxXgHYn_OJnxp9RHvGOhXdV6ouY1_UwxEZWUK2jIcDtx9GFEa5zQOg5jp11ju4ZAVvxyqlS96D7M-JHQg\",\n    \"refreshToken\": \"jl4gmq5SKPV6blcy/rzPFZc/1M2iCpEMaHh3p7gkQ6senuPuoebjN8Pq3OnBVrP8kBWsp1BMvcabI82TK/0rBA==\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"An access token is returned\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('token')",
+							"    pm.expect(pm.response.json().token).to.be.a('string')",
+							"    // Set the collection-scope \"token\" variable to the token received from the API",
+							"    // This lets us use it in other requests",
+							"    pm.collectionVariables.set('token', pm.response.json().token)",
+							"})",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "taxidriver@mail.com",
+							"type": "text"
+						},
+						{
+							"key": "Password",
+							"value": "TaxiL_123J@hn",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/auth/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					],
+					"query": [
+						{
+							"key": "Email",
+							"value": "taxidriver@mail.com",
+							"disabled": true
+						},
+						{
+							"key": "Password",
+							"value": "TaxiL_123J@hn",
+							"disabled": true
+						}
+					]
+				},
+				"description": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection."
+			},
+			"response": []
+		},
+		{
+			"name": "Unregister",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Returns 200 OK status\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"token\": \"{{token}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/unregister",
+				"description": "This request un-registers a token by using the token collection variable in the POST body.\n\nWe also added a test to ensure the response has a 200 OK status code."
+			},
+			"response": []
+		},
+		{
+			"name": "CreateChat",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTAzZWE0NS1iMDAyLTQ0YjMtOTQ0MS1lMmEyZmM5NzI5NzIiLCJlbWFpbCI6InRheGlkcml2ZXJAbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiSm9oblNtaXRoIiwibmJmIjoxNzQxNjg2MzM2LCJleHAiOjE3NDE2ODk5MzYsImlhdCI6MTc0MTY4NjMzNiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ4IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ4In0.LtTm5cvLp5NL3k4hf1cSSVZadLfddHii1P3wnyLS1hGB1cJuJRkKyvs_YaxJlj8GfeZUl8b730geBFOjrjqOTA"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"User1Id\": \"0103ea45-b002-44b3-9441-e2a2fc972972\",\n    \"User2Id\": \"78f833ee-2bd2-4f14-9e85-aab6806e8cc2\",\n    \"UserName1\": \"JohnSmith\",\n    \"UserName2\": \"rationalInvestor\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/api/chat/create"
+			},
+			"response": []
+		},
+		{
+			"name": "UserSearch",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTAzZWE0NS1iMDAyLTQ0YjMtOTQ0MS1lMmEyZmM5NzI5NzIiLCJlbWFpbCI6InRheGlkcml2ZXJAbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiSm9oblNtaXRoIiwibmJmIjoxNzQxNjg2MzM2LCJleHAiOjE3NDE2ODk5MzYsImlhdCI6MTc0MTY4NjMzNiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ4IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ4In0.LtTm5cvLp5NL3k4hf1cSSVZadLfddHii1P3wnyLS1hGB1cJuJRkKyvs_YaxJlj8GfeZUl8b730geBFOjrjqOTA"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/users/search?username=rationalInvestor",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"search"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "rationalInvestor"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AuthCheck",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTAzZWE0NS1iMDAyLTQ0YjMtOTQ0MS1lMmEyZmM5NzI5NzIiLCJlbWFpbCI6InRheGlkcml2ZXJAbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiSm9oblNtaXRoIiwibmJmIjoxNzQxNjg2MzM2LCJleHAiOjE3NDE2ODk5MzYsImlhdCI6MTc0MTY4NjMzNiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ4IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTQ4In0.LtTm5cvLp5NL3k4hf1cSSVZadLfddHii1P3wnyLS1hGB1cJuJRkKyvs_YaxJlj8GfeZUl8b730geBFOjrjqOTA"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{baseUrl}}/api/auth/check"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://postman-integration-testing.glitch.me/"
+		}
+	]
+}

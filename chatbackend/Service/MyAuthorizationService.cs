@@ -49,10 +49,14 @@ namespace chatbackend.Service
         }
 
         //URL Signing functions
-        private string SignUrl(string url, string key) //Private
+        private string SignUrl(string url) //Private
         {
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentNullException(nameof(url), "URL cannot be null or empty.");
+            }
             var encoding = new ASCIIEncoding();
-            byte[] keyByte = encoding.GetBytes(key);
+            byte[] keyByte = encoding.GetBytes(_urlSigningKey);
             byte[] messageBytes = encoding.GetBytes(url);
             using (var hmacsha256 = new HMACSHA256(keyByte))
             {
@@ -62,16 +66,17 @@ namespace chatbackend.Service
             }
         }
 
-        public string GenerateSecuredFileURL(string folderName, string fileNameWithExtension, int expirationHours = 1)
+        public string? GenerateSecuredFileURL(string folderName, string fileNameWithExtension, int expirationHours = 1)
         {
             var expirationTime = DateTime.UtcNow.AddHours(expirationHours);
 
             // Create the URL
             var urlHelper = GetUrlHelper();
             var url = urlHelper.Action("GetFile", "Content", new { folderName = _baseFilePath + "/" + folderName, fileName = fileNameWithExtension, expires = expirationTime.Ticks }, "https");
+            if(string.IsNullOrEmpty(url)) return null;
 
             //Sign the url
-            var signedUrl = SignUrl(url, _urlSigningKey);
+            var signedUrl = SignUrl(url);
 
             return signedUrl;
         }
@@ -86,9 +91,10 @@ namespace chatbackend.Service
 
             var urlHelper = GetUrlHelper();
             var url = urlHelper.Action("GetFile", "Content", new { folderName = _baseFilePath + "/" + folderName, fileName = fileNameWithExtension, expires = expirationTime.Ticks }, "https");
+            if(string.IsNullOrEmpty(url)) return null;
 
             //Sign the url
-            var signedUrl = SignUrl(url, _urlSigningKey);
+            var signedUrl = SignUrl(url);
 
             return signedUrl;
         }
@@ -98,9 +104,9 @@ namespace chatbackend.Service
             // Create original url, notice parameters order must match the original one during signature creation
             var urlHelper = GetUrlHelper();
             string url = urlHelper.Action("GetFile", "Content", new { folderName = folderName, fileName = fileName, expires = expires }, "https");
-
+            if(string.IsNullOrEmpty(url)) return false;
             // Create the signature
-            string signature = SignUrl(url, _urlSigningKey);
+            string signature = SignUrl(url);
             return signature == hash;
         }
 

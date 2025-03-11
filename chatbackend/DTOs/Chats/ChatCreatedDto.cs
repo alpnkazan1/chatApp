@@ -7,8 +7,8 @@ namespace chatbackend.DTOs.Chats
 {
     public class ChatCreatedDto
     {
-        public Guid ChatId { get; set; }
-        public Guid User1Id { get; set; }
-        public Guid User2Id { get; set; }
+        public string ChatId { get; set; }
+        public string User1Id { get; set; }
+        public string User2Id { get; set; }
     }
 }

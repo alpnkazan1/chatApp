@@ -61,7 +61,7 @@ namespace chatbackend.Controllers
             {
                 try
                 {
-                    string fileUrl = null; // Default to null for no file
+                    string? fileUrl = null; // Default to null for no file
 
                     if (message.FileFlag != 0)
                     {
@@ -117,7 +117,7 @@ namespace chatbackend.Controllers
                 return Forbid(); // Or Unauthorized, depending on your policy
             }
 
-            string fileUrl = null; // Default to null for no file
+            string? fileUrl = null; // Default to null for no file
             
             if (message.FileFlag != 0)
             {

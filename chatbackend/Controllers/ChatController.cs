@@ -32,17 +32,39 @@ namespace chatbackend.Controllers
             // Check if the chat already exists
             var existingChat = await _context.Chats
                 .FirstOrDefaultAsync(c => 
-                    (c.User1Id == chatDto.User1Id && c.User2Id == chatDto.User2Id) ||
-                    (c.User1Id == chatDto.User2Id && c.User2Id == chatDto.User1Id));
+                    (c.User1Id.ToString() == chatDto.User1Id && c.User2Id.ToString() == chatDto.User2Id) ||
+                    (c.User1Id.ToString() == chatDto.User2Id && c.User2Id.ToString() == chatDto.User1Id));
 
             if (existingChat != null)
             {
                 return Conflict(new { message = "Chat already exists.", chatId = existingChat.ChatId });
             }
-            // Fetch User1 and User2 from the database
-            var user1 = await _context.Users.FindAsync(chatDto.User1Id);
-            var user2 = await _context.Users.FindAsync(chatDto.User2Id);
+            
+            // Initialize user variables
+            User user1 = null;
+            User user2 = null;
 
+            // Fetch User1 from the database
+            if (Guid.TryParse(chatDto.User1Id, out Guid user1Id))
+            {
+                user1 = await _context.Users.FindAsync(user1Id);
+            }
+            else
+            {
+                return BadRequest(new { message = "Invalid GUID format for User1Id." });
+            }
+
+            // Fetch User2 from the database
+            if (Guid.TryParse(chatDto.User2Id, out Guid user2Id))
+            {
+                user2 = await _context.Users.FindAsync(user2Id);
+            }
+            else
+            {
+                return BadRequest(new { message = "Invalid GUID format for User2Id." });
+            }
+
+            // Check if users are found
             if (user1 == null || user2 == null)
             {
                 return NotFound(new { message = "One or both users not found." });
@@ -66,13 +88,14 @@ namespace chatbackend.Controllers
 
             var response = new ChatCreatedDto
             {
-                ChatId = newChat.ChatId,
-                User1Id = newChat.User1Id,
-                User2Id = newChat.User2Id
+                ChatId = newChat.ChatId.ToString(),
+                User1Id = newChat.User1Id.ToString(),
+                User2Id = newChat.User2Id.ToString()
             };
 
             return Ok(response);
         }
+
     
         [HttpGet("photos/{chatId}")]
         public async Task<IActionResult> GetChatPhotos(Guid chatId, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
