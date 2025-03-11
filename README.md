@@ -8,7 +8,7 @@
 
 ## Overview
 
-ChatApp v0.1 is the initial public version of a real-time chat application. It is licensed under the MIT License, which can be reviewed in the `LICENSE` file. This project is currently under development and not fully functional yet. It is shared as proof of work and will be improved over time.
+ChatApp v0.0.4 is the initial public version of a real-time chat application. It is licensed under the MIT License, which can be reviewed in the `LICENSE` file. This project is currently under development and not fully functional yet. It is shared as proof of work and will be improved over time.
 
 ## Current Progress
 
