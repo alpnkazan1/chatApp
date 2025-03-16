@@ -24,6 +24,7 @@ public class ChatHub : Hub
     public override async Task OnConnectedAsync()
     {
         var httpContext = Context.GetHttpContext();
+        _logger.LogInformation("Connection established, doing validation of user.");
         // 1. Get the access token securely
         string? accessToken = httpContext?.Request.Headers["Authorization"]
             .ToString().Replace("Bearer ", "", StringComparison.OrdinalIgnoreCase);
@@ -146,7 +147,17 @@ public class ChatHub : Hub
         }
 
         // Broadcast the message to all clients in the chat
-        await Clients.Group(messageDto.ChatId.ToString()).SendAsync("newMessage", messageReqDto);
+        // Test TO DO: Clean this up
+        try
+        {
+            _logger.LogInformation($"Attempting to send newMessage to group {messageDto.ChatId} with MessageId {messageReqDto.MessageId}");
+            await Clients.Group(messageDto.ChatId.ToString()).SendAsync("newMessage", messageReqDto);
+            _logger.LogInformation($"Successfully sent newMessage to group {messageDto.ChatId} with MessageId {messageReqDto.MessageId}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error sending newMessage to group {messageDto.ChatId} with MessageId {messageReqDto.MessageId}");
+        }
 
         _logger.LogInformation($"Message sent in chat {messageDto.ChatId} by user {userId}. Message ID: {messageReqDto.MessageId}");
     }

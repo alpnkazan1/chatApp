@@ -112,6 +112,22 @@ builder.Services.AddScoped(provider =>
         httpContextAccessor,
         config);
 });
+
+
+
+builder.Services.AddSignalR();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5148")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+        });
+});
+
 // Inotify limit fix
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
 
@@ -137,6 +153,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Map the SignalR Hub
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();
 

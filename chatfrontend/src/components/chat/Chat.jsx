@@ -2,90 +2,109 @@ import "./chat.css";
 import WebcamCapture from "./webcamCapture/WebcamCapture";
 import MicCapture from "./micCapture/MicCapture";
 import { useEffect, useState, useRef } from "react";
-
-import { io } from "socket.io-client";
+import * as signalR from "@microsoft/signalr"; // Import SignalR
 import EmojiPicker from "emoji-picker-react";
 
-import {useChatStore} from '../../lib/chatStore';
-import {useUserStore} from '../../lib/userStore';
+import { useChatStore } from '../../lib/chatStore';
+import { useUserStore } from '../../lib/userStore';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Chat = () => {
-    const { currentUser, accessToken } = useUserStore();
+    const { currentUser, accessToken, } = useUserStore();
     const { selectedChat, addMessage, messages } = useChatStore();
-    const [open,setOpen] = useState(false);
-    const [text,setText] = useState("");
+    const [open, setOpen] = useState(false);
+    const [text, setText] = useState("");
     const [isCameraOpen, setIsCameraOpen] = useState(false);
-    const [selectedImage,setSelectedImage] = useState("");
+    const [selectedImage, setSelectedImage] = useState("");
     const [lastSeen, setLastSeen] = useState("");
     const [image, setImage] = useState(null);
     const endRef = useRef(null); //This is used to scroll to bottom of chat
     const fileInputRef = useRef(null);
     const [isMicOpen, setIsMicOpen] = useState(false);
+    const [connection, setConnection] = useState(null); // SignalR Connection state
 
-    // When a new chat is selected open websocket for that chat
-    // And, scroll to the bottom of chatlog
     useEffect(() => {
         // Early return on fail
         if (!selectedChat) return;
 
-        endRef.current?.scrollIntoView({behavior:"smooth"})
+        endRef.current?.scrollIntoView({ behavior: "smooth" })
 
-        // Open WebSocket connection
-        const newSocket = io(`${API_BASE_URL}/chatHub`, {
-            auth: {
-                token: accessToken, // Send token via `auth`
-            },
-            query: {
-                chatId: selectedChat.chatId, // Only chatId in query
-            },
-            transports: ["websocket"], // Force WebSocket to avoid polling
-        });
-        
+        // Start SignalR Connection
+        const startSignalR = async () => {
+            try {
+                // Configure connection
+                const hubConnection = new signalR.HubConnectionBuilder()
+                    .withUrl(`${API_BASE_URL}/chatHub?chatId=${selectedChat.chatId}`, {
+                        accessTokenFactory: () => accessToken,
+                    })
+                    .configureLogging(signalR.LogLevel.Information)
+                    .build();
+                
+                //Set functions and log
+                hubConnection.onclose(error => {
+                  console.error("Websocket closed on backend: ", error)
+                });
+                // Listen for new incoming messages
+                hubConnection.on("newMessage", (message) => {
+                    addMessage(message);
+                });
 
-        // Listen for new incoming messages 
-        // and immediately store them in Zustand
-        newSocket.on("newMessage", (message) => {
-            addMessage(message);
-        });
+                // Listen for last seen updates
+                hubConnection.on("lastSeenUpdate", (lastSeen) => {
+                    setLastSeen(lastSeen);
+                });
+                
+                // Start the connection
+                await hubConnection.start();
+                console.log("SignalR Connected.");
+                setConnection(hubConnection);
 
-        // Listen for last seen updates
-        newSocket.on("lastSeenUpdate", (lastSeen) => {
-            setLastSeen(lastSeen);
-        });
-
-        setSocket(newSocket);
-        
-        // Hopefully, this clean up function will be called only when
-        //  we change selectedChat. But, based on re-rendering behaviour
-        //  I might be wrong and this may need a fix.
-        return () => {
-            newSocket.disconnect();
+            } catch (err) {
+                console.error("SignalR connection error: ", err);
+                toast.error("SignalR connection failed!");
+            }
         };
-    },[selectedChat]);
+
+        startSignalR();
+      
+        return () => {
+            if (connection) {
+                connection.stop();
+            }
+        };
+    }, [selectedChat,accessToken, addMessage, setLastSeen]);
 
     const handleSendMessage = async () => {
         if (!text.trim() && !image) return;
-    
-        const message = {
+
+        // Validate values before sending it to the server
+        const receiverId = selectedChat.user1Id === currentUser.id ? selectedChat.user2Id : selectedChat.user1Id;
+
+        const messageData = {
             chatId: selectedChat.chatId,
-            text: text.trim(),
-            imageUrl: image ? image : null,
-            soundFileUrl: null,
-            timestamp: new Date().toISOString(),
-            own: true,
+            receiverId: receiverId,
+            messageText: text.trim(),
+            fileFlag: image ? 1 : 0, // Set file flag if there's an image
+            fileId: null,  // Implement file upload later
+            fileExtension: image ? image.split('.').pop() : null //Gets the image ext
         };
 
-        socket.emit("userMessage", message);
-        addMessage(message);
+        // Send Message
+        try {
+            await connection.invoke("SendMessage", messageData);
+            setText("");
+            setImage(null);
+            setSelectedImage(null); // Reset image preview
 
-        setText("");
-        setImage(null);
+        } catch (err) {
+            console.error("Error sending message: ", err);
+            // Handle errors - probably tell the user something went wrong
+        }
     };
 
-    const handleEmoji = e =>{
-        setText((prev) => prev + e.emoji);
+    const handleEmoji = e => {
+        setText(prev => prev + e.emoji);
         setOpen(false);
     };
 
@@ -97,20 +116,21 @@ const Chat = () => {
         const file = event.target.files[0];
         if (file) {
             setSelectedImage(URL.createObjectURL(file));  // Create a preview URL for the image
+            setImage(file.name); //Store the name since fileID is not implement
         }
     };
 
     const handleCaptureImage = (imageSrc) => {
         // Handle the image received from webcam
         setSelectedImage(imageSrc);
+        setImage(imageSrc) //Set the base64 url into image
     };
-    
-    return(
-        <div className="chat">
 
+    return (
+        <div className="chat">
             <div className="top">
                 <div className="user">
-                    <img src={selectedChat?.avatar || "./avatar.png"} alt=""/>
+                    <img src={selectedChat?.avatar || "./avatar.png"} alt="" />
                     <div className="texts">
                         <span>{selectedChat?.userName}</span>
                         <p>{lastSeen}</p>
@@ -159,30 +179,30 @@ const Chat = () => {
                     />
                 )}
                 <div className="icons">
-                    <img 
-                        src="./img.png" 
-                        alt="Pick Image" 
-                        onClick={handleImageClick} 
+                    <img
+                        src="./img.png"
+                        alt="Pick Image"
+                        onClick={handleImageClick}
                     />
-                    <input 
-                        type="file" 
-                        ref={fileInputRef} 
-                        style={{ display: "none" }} 
-                        accept="image/*" 
-                        onChange={handleImageChange} 
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: "none" }}
+                        accept="image/*"
+                        onChange={handleImageChange}
                     />
                     <img
                         src="./camera.png"
                         alt="Open Camera"
                         onClick={() => setIsCameraOpen(true)}
                     />
-                    <img 
-                        src="./mic.png" 
-                        alt="Record Sound" 
-                        onClick={() => setIsMicOpen(true)} 
+                    <img
+                        src="./mic.png"
+                        alt="Record Sound"
+                        onClick={() => setIsMicOpen(true)}
                     />
                     {isMicOpen && (
-                        <MicCapture 
+                        <MicCapture
                             onClose={() => setIsMicOpen(false)}
                         />
                     )}
@@ -196,17 +216,17 @@ const Chat = () => {
                         </div>
                     )}
                     {/* Text input */}
-                    <input 
-                        value={text} 
-                        onChange={(e) => setText(e.target.value)} 
+                    <input
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
                         placeholder="Type a message..."
                         className="input-field"
                     />
                 </div>
                 <div className="emoji">
-                    <img className="emoji-icon" src="./emoji.png" alt="" onClick={()=>setOpen(prev=>!prev)}/>
+                    <img className="emoji-icon" src="./emoji.png" alt="" onClick={() => setOpen(prev => !prev)} />
                     <div className="picker">
-                        <EmojiPicker open={open} onEmojiClick={handleEmoji}/>
+                        <EmojiPicker open={open} onEmojiClick={handleEmoji} />
                     </div>
                 </div>
                 <button className="sendButton" onClick={handleSendMessage}>Send</button>
